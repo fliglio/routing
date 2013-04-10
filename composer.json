@@ -1,6 +1,7 @@
 {
     "name": "fliglio/routing",
     "type": "library",
+    "licence": "GPL-3.0+",
     "authors": [
         {
             "name": "Ben Schwartz",
