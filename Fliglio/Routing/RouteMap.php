@@ -2,11 +2,12 @@
 
 namespace Fliglio\Routing;
 
+use Fliglio\Web\Uri;
+use Fliglio\Web\HttpAttributes;
+
 class RouteMap {
 	protected static $routeConfig = array();
-	
-	private $ns;
-	
+		
 	private $routes  = array();
 	private $indexed = array();
 
@@ -14,18 +15,16 @@ class RouteMap {
 		self::$routeConfig = $routes;
 	}
 	
-	public function __construct($ns = null) {
-		$this->ns = $ns;
+	public function __construct() {
 		foreach (self::$routeConfig as $key => $route) {
 			$this->connect($key, $route);
 		}
 	}
 
-	public function connect( $key, Route $route ) {
+	public function connect($key, Route $route) {
 		if (isset($this->indexed[$key])) {
 			throw new RouteException( "Route '{$key}' already exists" );
 		}
-		$route->setNamespace($this->ns);
 		$this->routes[] = $route;
 		$this->indexed[$key] = $route;
 	}
@@ -38,10 +37,10 @@ class RouteMap {
 			$this->indexed[$key]->setProtocol( $params['protocol'] );
 			unset($params['protocol']);
 		}
-		if ($this->indexed[$key]->getProtocol() == Web_HttpAttributes::getProtocol()) {
+		if ($this->indexed[$key]->getProtocol() == HttpAttributes::getProtocol()) {
 			return $this->indexed[$key]->urlFor($params);
 		} else {
-			$base = new Web_Uri(sprintf('%s://%s/', $this->indexed[$key]->getProtocol(), Web_HttpAttributes::getHttpHost()));
+			$base = new Uri(sprintf('%s://%s/', $this->indexed[$key]->getProtocol(), HttpAttributes::getHttpHost()));
 			return $base->join($this->indexed[$key]->urlFor($params));
 		}
 	}

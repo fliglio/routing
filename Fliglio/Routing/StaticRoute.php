@@ -1,5 +1,9 @@
 <?php
 
+namespace Fliglio\Routing;
+
+use Fliglio\Web\Uri;
+
 class StaticRoute extends Route {
 
 	protected $criteria;
@@ -10,13 +14,13 @@ class StaticRoute extends Route {
 		$this->criteria = $criteria;
 	}
 	
-	public function match(Web_Uri $input) {
+	public function match(Uri $input) {
 		return (string)$input === $this->criteria;
 	}
 
 	public function urlFor(array $params = array()) {
 
-		return new Web_Uri($this->assembleUrl($this->criteria, $params));
+		return new Uri($this->assembleUrl($this->criteria, $params));
 	}
 
 

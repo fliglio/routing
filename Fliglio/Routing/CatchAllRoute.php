@@ -16,6 +16,4 @@ class CatchAllRoute extends Route {
 	public function match($input) {
 		return true;
 	}
-
-
 }
