@@ -2,4 +2,4 @@
 
 namespace Fliglio\Routing;
 
-class RouteException extends Exception {}
+class RouteException extends \Exception {}

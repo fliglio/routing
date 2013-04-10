@@ -59,7 +59,6 @@ class RoutingApp extends MiddleWare {
 		 */
 		$restfulFlag = $route->isRestful() ? "!" : "";
 		$context->getRequest()->setCommand($params['ns'] . '.' .  $params['commandGroup'] . '.' . $params['command'] . $restfulFlag);
-		
 		$this->wrappedApp->call($context);
 	}
 }
