@@ -2,6 +2,8 @@
 
 namespace Fliglio\Routing;
 
+use Fliglio\Web\Uri;
+
 class CatchNoneRoute extends Route {
 
 	public function __construct(array $defaults = array()) {
@@ -11,7 +13,7 @@ class CatchNoneRoute extends Route {
 		return '';
 	}
 	
-	public function match($input) {
+	public function match(Uri $input) {
 		return false;
 	}
 

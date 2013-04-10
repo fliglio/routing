@@ -61,7 +61,7 @@ class RouteMap {
 	public function getRouteKeys() {
 		return array_keys( $this->indexed );
 	}
-	public function getRoute( Web_Uri $request ) {
+	public function getRoute(Uri $request) {
 		if ( substr( (string)$request, 0, 1 ) === '@' ) {
 			$key = substr( (string)$request, 1 );
 			if ( array_key_exists( $key, $this->indexed ) ) {
@@ -76,14 +76,6 @@ class RouteMap {
 			}
 		}
 		throw new RouteException( "Route Not Found" );
-	}
-
-	protected function cleanupRoute( $route ) {
-		if( isset( $route['cmd'] ) ) {
-			list( $route['module'], $route['commandGroup'], $route['command'] ) = explode( '.', $route['cmd'] );
-			unset( $route['cmd'] );
-		}
-		return $route;
 	}
 
 }

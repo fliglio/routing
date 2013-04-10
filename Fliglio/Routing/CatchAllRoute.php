@@ -2,6 +2,8 @@
 
 namespace Fliglio\Routing;
 
+use Fliglio\Web\Uri;
+
 class CatchAllRoute extends Route {
 
 	protected $criteria;
@@ -13,7 +15,7 @@ class CatchAllRoute extends Route {
 		return '';
 	}
 	
-	public function match($input) {
+	public function match(Uri $input) {
 		return true;
 	}
 }

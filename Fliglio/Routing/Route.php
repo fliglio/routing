@@ -14,7 +14,7 @@ abstract class Route {
 		$this->defaults = $defaults;
 	}
 
-	abstract public function match($input);
+	abstract public function match(Uri $input);
 
 	abstract public function urlFor(array $options = array());
 
@@ -40,7 +40,7 @@ abstract class Route {
 			}
 		}
 		if( isset( $args['cmd'] ) ) {
-			list( $args['module'], $args['commandGroup'], $args['command'] ) = explode( '.', $args['cmd'] );
+			list( $args['ns'], $args['commandGroup'], $args['command'] ) = explode( '.', $args['cmd'] );
 			unset( $args['cmd'] );
 		}
 		return $args;

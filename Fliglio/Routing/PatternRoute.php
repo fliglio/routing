@@ -30,7 +30,7 @@ class PatternRoute extends RegexRoute {
 	 */
 	static public function parse($pattern) {
 		return array(
-			'/^' . preg_replace_callback('/\\\:(\w+)/', 'PatternRoute::__parser_callback', preg_quote($pattern, '/')) . '$/',
+			'/^' . preg_replace_callback('/\\\:(\w+)/', 'Fliglio\Routing\PatternRoute::__parser_callback', preg_quote($pattern, '/')) . '$/',
 			self::__parser_callback(null, true) 
 		);
 	}
@@ -77,7 +77,7 @@ class PatternRoute extends RegexRoute {
 		return new Uri($this->assembleUrl($url, $params));
 	}
 
-	public function match($input) {
+	public function match(Uri $input) {
 		if (parent::match($input)) {
 			$this->capturedArgs = array_intersect_key($this->capturedArgs, array_flip($this->toCapture));
 			return true;
