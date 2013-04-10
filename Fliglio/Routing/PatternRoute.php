@@ -2,6 +2,8 @@
 
 namespace Fliglio\Routing;
 
+use Fliglio\Web\Uri;
+
 /**
  * Routing_PatternRoute
  * 
@@ -72,7 +74,7 @@ class PatternRoute extends RegexRoute {
 			unset($params[$key]);
 		}
 
-		return new Web_Uri($this->assembleUrl($url, $params));
+		return new Uri($this->assembleUrl($url, $params));
 	}
 
 	public function match($input) {

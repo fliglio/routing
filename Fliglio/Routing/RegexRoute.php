@@ -2,6 +2,8 @@
 
 namespace Fliglio\Routing;
 
+use Fliglio\Web\Uri;
+
 abstract class RegexRoute extends Route {
 
 	protected $regex;
@@ -13,7 +15,7 @@ abstract class RegexRoute extends Route {
 	}
 	
 	
-	public function match($input) {
+	public function match(Uri $input) {
 		return (bool) preg_match($this->regex, (string)$input, $this->capturedArgs);
 	}
 
