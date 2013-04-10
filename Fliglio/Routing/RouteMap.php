@@ -33,9 +33,13 @@ class RouteMap {
 		if (!isset($this->indexed[$key])) {
 			throw new RouteException("'" . $key . "' not found in routes");
 		}
-		if (isset($params['protocol'])) {
-			$this->indexed[$key]->setProtocol( $params['protocol'] );
-			unset($params['protocol']);
+		if (isset($params['_protocol'])) {
+			$this->indexed[$key]->setProtocol( $params['_protocol'] );
+			unset($params['_protocol']);
+		}
+		if (isset($params['_restful'])) {
+			$this->indexed[$key]->setProtocol( $params['_restful'] );
+			unset($params['_restful']);
 		}
 		if ($this->indexed[$key]->getProtocol() == HttpAttributes::getProtocol()) {
 			return $this->indexed[$key]->urlFor($params);
@@ -61,7 +65,7 @@ class RouteMap {
 	public function getRouteKeys() {
 		return array_keys( $this->indexed );
 	}
-	public function getRoute( Web_Uri $request ) {
+	public function getRoute(Uri $request) {
 		if ( substr( (string)$request, 0, 1 ) === '@' ) {
 			$key = substr( (string)$request, 1 );
 			if ( array_key_exists( $key, $this->indexed ) ) {
@@ -76,14 +80,6 @@ class RouteMap {
 			}
 		}
 		throw new RouteException( "Route Not Found" );
-	}
-
-	protected function cleanupRoute( $route ) {
-		if( isset( $route['cmd'] ) ) {
-			list( $route['module'], $route['commandGroup'], $route['command'] ) = explode( '.', $route['cmd'] );
-			unset( $route['cmd'] );
-		}
-		return $route;
 	}
 
 }

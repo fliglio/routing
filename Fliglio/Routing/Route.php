@@ -14,17 +14,29 @@ abstract class Route {
 		$this->defaults = $defaults;
 	}
 
-	abstract public function match($input);
+	abstract public function match(Uri $input);
 
 	abstract public function urlFor(array $options = array());
 
-	public function setProtocol( $val ) {  $this->defaults['protocol'] = $val; }
+	public function setProtocol($val) {
+		$this->defaults['_protocol'] = $val;
+	}
+	public function setRestful($val) {
+		$this->defaults['_restful'] = $val;
+	}
 
 	public function getProtocol() {
-		if( isset( $this->defaults['protocol'] ) ) {
-			return $this->defaults['protocol'] == '' ? HttpAttributes::getProtocol() : $this->defaults['protocol'];
+		if (isset($this->defaults['_protocol']) && $this->defaults['_protocol'] != '') {
+			return $this->defaults['_protocol'];
 		} else {
 			return HttpAttributes::getProtocol();
+		}
+	}
+	public function isRestful() {
+		if (isset($this->defaults['_restful'])) {
+			return (bool) $this->defaults['_restful'];
+		} else {
+			return false;
 		}
 	}
 
@@ -40,7 +52,7 @@ abstract class Route {
 			}
 		}
 		if( isset( $args['cmd'] ) ) {
-			list( $args['module'], $args['commandGroup'], $args['command'] ) = explode( '.', $args['cmd'] );
+			list( $args['ns'], $args['commandGroup'], $args['command'] ) = explode( '.', $args['cmd'] );
 			unset( $args['cmd'] );
 		}
 		return $args;
