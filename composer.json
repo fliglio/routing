@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": ">=5.3",
-		"fliflio/web": "dev-trunk",
+		"fliflio/web": "dev-trunk"
     },
     "autoload": {
         "psr-0": { "Fliglio\\Routing\\": "" }
