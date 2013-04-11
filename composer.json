@@ -10,8 +10,8 @@
     ],
     "require": {
         "php": ">=5.3",
-        "fliglio/web": "~1.1",
-        "fliglio/flfc": "~1.0"
+        "fliglio/web": "dev-master",
+        "fliglio/flfc": "dev-master"
     },
     "autoload": {
         "psr-0": { "Fliglio\\Routing\\": "" }
