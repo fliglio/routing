@@ -20,7 +20,7 @@ class RoutingApp extends MiddleWare {
 		if (substr($currentUrl, -1) == '/' && $currentUrl != '/') {
 			$redirect = new Uri($currentUrl);
 			$url = new Uri(sprintf("%s://%s/", HttpAttributes::getProtocol(), HttpAttributes::getHttpHost()));
-			$url->join($redirect);
+			$url->join(rtrim((string)$redirect, '/'));
 			
 			$getParams = $context->getRequest()->getParams();
 			if (isset($getParams["fliglio_request"])) {
@@ -29,9 +29,10 @@ class RoutingApp extends MiddleWare {
 			if (isset($getParams["PHPSESSID"])) {
 				unset($getParams["PHPSESSID"]);
 			}
-			$queryString = count($getParams) > 0 ? '?'.http_build_query($getParams) : ''; 
 			
-			throw new RedirectException("stripping trailing slash", 301, rtrim((string)$url, "/").$queryString);
+			$url = Uri::merge($url, $getParams);
+			
+			throw new RedirectException("stripping trailing slash", 301, $url);
 		}
 	
 		/* Register RouteMap with Context. Identify current Command
