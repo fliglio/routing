@@ -6,7 +6,6 @@ use Fliglio\Web\Uri;
 use Fliglio\Web\HttpAttributes;
 
 class RouteMap {
-	protected static $routeConfig = array();
 		
 	private $routes  = array();
 	private $indexed = array();
@@ -16,9 +15,6 @@ class RouteMap {
 	}
 	
 	public function __construct() {
-		foreach (self::$routeConfig as $key => $route) {
-			$this->connect($key, $route);
-		}
 	}
 
 	public function connect($key, Route $route) {
@@ -27,6 +23,7 @@ class RouteMap {
 		}
 		$this->routes[] = $route;
 		$this->indexed[$key] = $route;
+		return $this;
 	}
 
 	public function urlFor($key, array $params = array()) {
