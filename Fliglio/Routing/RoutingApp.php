@@ -18,9 +18,8 @@ class RoutingApp extends MiddleWare {
 		/* Strip trailing "/", adding back in namespace if necessary
 		 */
 		if (substr($currentUrl, -1) == '/' && $currentUrl != '/') {
-			$redirect = new Uri($currentUrl);
 			$url = new Uri(sprintf("%s://%s/", HttpAttributes::getProtocol(), HttpAttributes::getHttpHost()));
-			$url->join(rtrim((string)$redirect, '/'));
+			$url->join(rtrim($currentUrl, '/'));
 			
 			$getParams = $context->getRequest()->getParams();
 			if (isset($getParams["fliglio_request"])) {
