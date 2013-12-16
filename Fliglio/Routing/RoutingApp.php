@@ -20,14 +20,13 @@ class RoutingApp extends MiddleWare {
 	
 	public function call(Context $context) {
 		$currentUrl = $context->getRequest()->getCurrentUrl();
-			
+
 		// Identify current Command; register RouteMap & params with Context
 		$route = $this->routeMap->getRoute(new Uri($currentUrl));
-		
-		$context->getRequest()->setProp('currentRoute', $route);
+
+		$context->getRequest()->setProp('currentRoute', $route->getPath());
 		$params = $route->getParams();
 		$context->getRequest()->setProp('routeParams', $params);
-
 
 		// Force pages to their designated protocol if specified
 		if (HttpAttributes::getMethod() == HttpAttributes::METHOD_GET) {
