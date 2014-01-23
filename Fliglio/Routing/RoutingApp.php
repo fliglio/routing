@@ -12,7 +12,10 @@ use Fliglio\Flfc\App;
  * 
  */
 class RoutingApp extends MiddleWare {
-	
+
+	const CURRENT_ROUTE = 'currentRoute';
+	const ROUTE_PARAMS  = 'currentRoute';
+
 	public function __construct(App $appToWrap, RouteMap $routeMap) {
 		parent::__construct($appToWrap);
 		$this->routeMap = $routeMap;
@@ -23,10 +26,10 @@ class RoutingApp extends MiddleWare {
 
 		// Identify current Command; register RouteMap & params with Context
 		$route = $this->routeMap->getRoute(new Uri($currentUrl));
-
-		$context->getRequest()->setProp('currentRoute', $route->getPath());
 		$params = $route->getParams();
-		$context->getRequest()->setProp('routeParams', $params);
+
+		$context->getRequest()->setProp(self::CURRENT_ROUTE, $route);
+		$context->getRequest()->setProp(self::ROUTE_PARAMS, $params);
 
 		// Force pages to their designated protocol if specified
 		if (HttpAttributes::getMethod() == HttpAttributes::METHOD_GET) {
@@ -39,7 +42,7 @@ class RoutingApp extends MiddleWare {
 		}
 
 		// Register command
-		$restfulFlag = $route->isRestful() ? "!" : "";
+		$restfulFlag = $route->isRestful() ? RestInvokerApp::FLAG : "";
 		$context->getRequest()->setCommand($params['ns'] . '.' .  $params['commandGroup'] . '.' . $params['command'] . $restfulFlag);
 		$this->wrappedApp->call($context);
 	}
