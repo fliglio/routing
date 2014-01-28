@@ -12,6 +12,8 @@ use Fliglio\Web\HttpAttributes;
  */
 class RestInvokerApp extends App {
 	
+	const FLAG = '!';
+	
 	public function call(Context $context) {
 		$cmd = $context->getRequest()->getCommand();
 		list($ns, $commandGroup, $command) = explode('.', $context->getRequest()->getCommand());
@@ -22,7 +24,7 @@ class RestInvokerApp extends App {
 		$instance  = new $className($context);
 		
 		$method = $command;
-		if (substr($command, -1) == '!') {
+		if (substr($command, -1) == self::FLAG) {
 			$validMethod = in_array(HttpAttributes::getMethod(), array(
 				HttpAttributes::METHOD_POST, HttpAttributes::METHOD_GET, HttpAttributes::METHOD_PUT, HttpAttributes::METHOD_DELETE
 			));

@@ -17,6 +17,10 @@ class RouteMap {
 	public function __construct() {
 	}
 
+	public static function get() {
+		return new self();
+	}
+
 	public function connect($key, Route $route) {
 		if (isset($this->indexed[$key])) {
 			throw new RouteException( "Route '{$key}' already exists" );
