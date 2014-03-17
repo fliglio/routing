@@ -14,7 +14,7 @@ use Fliglio\Flfc\App;
 class RoutingApp extends MiddleWare {
 
 	const CURRENT_ROUTE = 'currentRoute';
-	const ROUTE_PARAMS  = 'currentRoute';
+	const ROUTE_PARAMS  = 'routeParams';
 
 	public function __construct(App $appToWrap, RouteMap $routeMap) {
 		parent::__construct($appToWrap);
