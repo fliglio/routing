@@ -67,12 +67,19 @@ class RoutingAppTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRouteGetParams() {
-		$this->request->setCurrentUrl('/api/static/baz?var1=value');
+		// This fails with "Fliglio\Routing\RouteException: Route Not Found"
+		// $this->request->setCurrentUrl('/api/static/baz?var1=value');
+
+		// given
+		$_SERVER['REQUEST_URI'] = '/api/static/baz?var1=value';
+		$this->context->setRequest(Request::createDefault());
 
 		$app = new RoutingApp(new StubApp, $this->routeMap);
 
+		// when
 		$app->call($this->context);
 
+		// then
 		$params = $this->context->getRequest()->getProp(RoutingApp::ROUTE_PARAMS);
 
 		$this->assertEquals($params['command'], 'baz');
