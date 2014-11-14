@@ -1,0 +1,7 @@
+image: php5.4
+script:
+  - composer up
+  - phpunit test
+notify:
+  email:
+    recipients:
