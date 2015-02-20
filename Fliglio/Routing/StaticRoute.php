@@ -6,22 +6,15 @@ use Fliglio\Web\Uri;
 
 class StaticRoute extends Route {
 
-	protected $criteria;
+	private $criteria;
 
-	public function __construct($criteria, array $defaults = array()) {
-		parent::__construct($defaults);
+	public function __construct($criteria, array $params = array()) {
+		parent::__construct($params);
 
 		$this->criteria = $criteria;
 	}
 	
-	public function match(Uri $input) {
+	public function match(Uri $input, $method) {
 		return (string)$input === $this->criteria;
 	}
-
-	public function urlFor(array $params = array()) {
-
-		return new Uri($this->assembleUrl($this->criteria, $params));
-	}
-
-
 }

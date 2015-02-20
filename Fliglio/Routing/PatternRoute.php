@@ -11,14 +11,17 @@ use Fliglio\Web\Uri;
  * 
  * @package Fl
  */
-class PatternRoute extends RegexRoute {
-	protected $pattern;
-	protected $toCapture = array();
+class PatternRoute extends Route {
+	private $regex;
 
-	public function __construct($pattern, array $defaults = array()) {
-		$this->pattern = $pattern;
-		list($regex, $this->toCapture) = self::parse($this->pattern);
-        parent::__construct($regex, $defaults);
+	private $toCapture = array();
+	private $capturedArgs = array();
+
+	public function __construct($pattern, array $params = array()) {
+        parent::__construct($params);
+
+		list($regex, $this->toCapture) = $this->parse($pattern);
+		$this->regex = $regex;
 	}
 
 	/**
@@ -28,7 +31,7 @@ class PatternRoute extends RegexRoute {
 	 * @param string $pattern Route pattern
 	 * @return array [the new regexp, captured parameter names]
 	 */
-	static public function parse($pattern) {
+	private function parse($pattern) {
 		return array(
 			'/^' . preg_replace_callback('/\\\:(\w+)/', 'Fliglio\Routing\PatternRoute::__parser_callback', preg_quote($pattern, '/')) . '$/',
 			self::__parser_callback(null, true) 
@@ -61,29 +64,20 @@ class PatternRoute extends RegexRoute {
 		return $this->toCapture;
 	}
 
-	public function urlFor(array $params = array()) {
-		$url = $this->pattern;
-		foreach ($this->toCapture as $key) {
-			if (!array_key_exists($key, $params)) {
-				throw new RouteException('Missing parameter "' . $key . '" in params');
-			}
-			
-			$url = str_replace(':' . $key, $params[$key], $url);
-			// Remove parameters that are in the url. They'll be added back
-			// to the url query.
-			unset($params[$key]);
-		}
 
-		return new Uri($this->assembleUrl($url, $params));
-	}
-
-	public function match(Uri $input) {
-		if (parent::match($input)) {
+	public function match(Uri $input, $method) {
+		if ((bool)preg_match($this->regex, (string)$input, $this->capturedArgs)) {
 			$this->capturedArgs = array_intersect_key($this->capturedArgs, array_flip($this->toCapture));
 			return true;
 		} 
 		else {
 			return false;
 		}
+	}
+
+	public function getParams() {
+		$params = parent::getParams();
+
+		return array_merge($params, $this->capturedArgs);
 	}
 }

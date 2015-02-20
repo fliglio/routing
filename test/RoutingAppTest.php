@@ -1,20 +1,16 @@
 <?php
+namespace Fliglio\Routing;
 
-require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 
 use Fliglio\Web\Uri;
-use Fliglio\Routing\RouteMap;
-use Fliglio\Routing\PatternRoute;
-use Fliglio\Routing\StaticRoute;
-use Fliglio\Routing\CatchNoneRoute;
-use Fliglio\Routing\RoutingApp;
+use Fliglio\Web\HttpAttributes;
 use Fliglio\Flfc\RedirectException;
 use Fliglio\Flfc\App;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
 use Fliglio\Flfc\Response;
 
-class RoutingAppTest extends PHPUnit_Framework_TestCase {
+class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 
 	private $request;
 	private $context;
@@ -26,76 +22,62 @@ class RoutingAppTest extends PHPUnit_Framework_TestCase {
 
 		$this->routeMap = new RouteMap();
 		$this->routeMap
-			->connect('test', new PatternRoute('/api/rest/:command', array(
-				'ns'           => 'TestApp',
-				'commandGroup' => 'Services',
-			)))
-			->connect("test2", new StaticRoute('/api/static/baz', array(
-				'cmd' => 'MyApp\Example.Services.baz',
-			)))
-			->connect("error", new CatchNoneRoute(array(
-				'cmd' => 'MyApp\Example.PageNotFound.handleError',
-			)));
+			->connect('patternEx', RouteBuilder::get()
+				->uri('/foo/:id')
+				->command('MyApp\Example.FooResource.getFoo')
+				->method(HttpAttributes::METHOD_GET)
+				->build()
+			)
+			->connect("staticEx", RouteBuilder::get()
+				->uri('/foo')
+				->command('MyApp\Example.FooResource.getAllFoos')
+				->method(HttpAttributes::METHOD_GET)
+				->build()
+			)
+			->connect("error", RouteBuilder::get()
+				->catchNone()
+				->command('MyApp\Example.ErrorResource.handleError')
+				->build()
+			)
+			->connect("404", RouteBuilder::get()
+				->catchAll()
+				->command('MyApp\Example.ErrorResource.handlePageNotFound')
+				->build()
+			);
 	}
 
-	public function testPatternRouteParams() {
-		$this->request->setCurrentUrl('/api/rest/method');
+	private function getRouteFromUrl($url) {
+		$this->request->setCurrentUrl($url);
 
 		$app = new RoutingApp(new StubApp, $this->routeMap);
 
 		$app->call($this->context);
 
-		$params = $this->context->getRequest()->getProp(RoutingApp::ROUTE_PARAMS);
-
-		$this->assertEquals($params['command'], 'method');
-		$this->assertEquals($params['commandGroup'], 'Services');
-		$this->assertEquals($params['ns'], 'TestApp');
+		return $this->context->getRequest()->getProp(RoutingApp::CURRENT_ROUTE);
 	}
 
-	public function testStaticRouteParams() {
-		$this->request->setCurrentUrl('/api/static/baz');
+	public function testPatternRoute() {
+		$route = $this->getRouteFromUrl('/foo/123');
 
-		$app = new RoutingApp(new StubApp, $this->routeMap);
-
-		$app->call($this->context);
-
-		$params = $this->context->getRequest()->getProp(RoutingApp::ROUTE_PARAMS);
-
-		$this->assertEquals($params['command'], 'baz');
-		$this->assertEquals($params['commandGroup'], 'Services');
-		$this->assertEquals($params['ns'], 'MyApp\Example');
+		$this->assertEquals('MyApp\Example.FooResource.getFoo', $route->getCommand());
 	}
 
-	public function testRouteGetParams() {
-		// This fails with "Fliglio\Routing\RouteException: Route Not Found"
-		// $this->request->setCurrentUrl('/api/static/baz?var1=value');
+	public function testStaticRoute() {
+		$route = $this->getRouteFromUrl('/foo');
 
-		// given
-		$_SERVER['REQUEST_URI'] = '/api/static/baz?var1=value';
-		$this->context->setRequest(Request::createDefault());
-
-		$app = new RoutingApp(new StubApp, $this->routeMap);
-
-		// when
-		$app->call($this->context);
-
-		// then
-		$params = $this->context->getRequest()->getProp(RoutingApp::ROUTE_PARAMS);
-
-		$this->assertEquals($params['command'], 'baz');
-		$this->assertEquals($params['commandGroup'], 'Services');
-		$this->assertEquals($params['ns'], 'MyApp\Example');
+		$this->assertEquals('MyApp\Example.FooResource.getAllFoos', $route->getCommand());
 	}
 
-	/**
-	 * @expectedException Fliglio\Routing\RouteException
-	 */
+	public function testCatchNoneParams() {
+		$route = $this->getRouteFromUrl('@error');
+
+		$this->assertEquals('MyApp\Example.ErrorResource.handleError', $route->getCommand());
+	}
+
 	public function testCatchAllParams() {
-		$this->request->setCurrentUrl('/asdf');
+		$route = $this->getRouteFromUrl('/dne');
 
-		$app = new RoutingApp(new StubApp, $this->routeMap);
-
-		$app->call($this->context);
+		$this->assertEquals('MyApp\Example.ErrorResource.handlePageNotFound', $route->getCommand());
 	}
 
 }

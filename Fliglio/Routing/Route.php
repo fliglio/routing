@@ -6,75 +6,53 @@ use Fliglio\Web\Uri;
 use Fliglio\Web\HttpAttributes;
 
 abstract class Route {
-	protected $defaults;
-	protected $capturedArgs = array();
+	private $params;
 
+	private $protocol;
+	private $command;
+	private $methods = array(
+		HttpAttributes::METHOD_GET, 
+		HttpAttributes::METHOD_POST, 
+		HttpAttributes::METHOD_PUT, 
+		HttpAttributes::METHOD_DELETE, 
+		HttpAttributes::METHOD_PATCH, 
+		HttpAttributes::METHOD_OPTIONS
+	);
 
-	public function __construct(array $defaults) {
-		$this->defaults = $defaults;
+	public function __construct(array $params) {
+		$this->params = $params;
 	}
 
-	abstract public function match(Uri $input);
+	public function match(Uri $input, $method) {
+		return in_array($method, $this->getMethods());
+	}
 
-	abstract public function urlFor(array $options = array());
+
+	public function setMethods(array $methods) {
+		$this->methods = $methods;
+	}
+	public function getMethods() {
+		return $this->methods;
+	}
+
+	public function setCommand($cmd) {
+		$this->command = $cmd;
+	}
+	public function getCommand() {
+		return $this->command;
+	}
 
 	public function setProtocol($val) {
-		$this->defaults['_protocol'] = $val;
+		$this->protocol = $val;
 	}
-	public function setRestful($val) {
-		$this->defaults['_restful'] = $val;
-	}
-
 	public function getProtocol() {
-		if (isset($this->defaults['_protocol']) && $this->defaults['_protocol'] != '') {
-			return $this->defaults['_protocol'];
-		} else {
-			return HttpAttributes::getProtocol();
-		}
-	}
-	public function isRestful() {
-		if (isset($this->defaults['_restful'])) {
-			return (bool) $this->defaults['_restful'];
-		} else {
-			return false;
-		}
+		return $this->protocol;
 	}
 
 
-	public function getCapturedParams() {
-		return $this->capturedArgs; 
-	}
+
 	public function getParams() {
-		$args = $this->capturedArgs;
-		foreach( $this->defaults AS $key => $val ) {
-			if( !isset( $args[$key] ) || $args[$key] == '' ) {
-				$args[$key] = $val;
-			}
-		}
-		if( isset( $args['cmd'] ) ) {
-			list( $args['ns'], $args['commandGroup'], $args['command'] ) = explode( '.', $args['cmd'] );
-			unset( $args['cmd'] );
-		}
-		return $args;
-	}
-
-	protected function assembleUrl($base, array $params) {
-		$length = count( $params );
-		foreach( $params AS $key => $val ) {
-			if( isset( $this->defaults[$key] ) && $this->defaults[$key] == $val ) {
-				unset( $params[$key] );
-			}
-		}
-		if( count( $params ) > 0 ) {
-			$cleanParams = array_map( array( $this, 'urlEncodeParts'), array_keys( $params ), array_values( $params ) );
-			$queryString = implode( "&", $cleanParams );
-
-			$base .= "?" . $queryString;
-		}
-		return new Uri( $base );
-	}
-	private function urlEncodeParts( $key, $val ) {
-		return urlencode( $key ) . "=" . urlencode( $val );
+		return $this->params;
 	}
 
 }

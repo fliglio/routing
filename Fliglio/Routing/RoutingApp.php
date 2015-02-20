@@ -25,15 +25,15 @@ class RoutingApp extends MiddleWare {
 		$currentUrl = $context->getRequest()->getCurrentUrl();
 
 		// Identify current Command; register RouteMap & params with Context
-		$route = $this->routeMap->getRoute(new Uri($currentUrl));
+		$route = $this->routeMap->getRoute(new Uri($currentUrl), HttpAttributes::getMethod());
 		$params = $route->getParams();
 
 		$context->getRequest()->setProp(self::CURRENT_ROUTE, $route);
 		$context->getRequest()->setProp(self::ROUTE_PARAMS, $params);
 
 		// Force pages to their designated protocol if specified
-		if (HttpAttributes::getMethod() == HttpAttributes::METHOD_GET) {
-			if(HttpAttributes::getProtocol() != $route->getProtocol()) {
+		if ($route->getProtocol() != null) {
+			if (HttpAttributes::getProtocol() != $route->getProtocol()) {
 				$url = Uri::get(sprintf("%s://%s/", $route->getProtocol(), HttpAttributes::getHttpHost()))
 						->join($currentUrl)
 						->addParams($_GET);
@@ -42,8 +42,7 @@ class RoutingApp extends MiddleWare {
 		}
 
 		// Register command
-		$restfulFlag = $route->isRestful() ? RestInvokerApp::FLAG : "";
-		$context->getRequest()->setCommand($params['ns'] . '.' .  $params['commandGroup'] . '.' . $params['command'] . $restfulFlag);
+		$context->getRequest()->setCommand($route->getCommand());
 		$this->wrappedApp->call($context);
 	}
 }
