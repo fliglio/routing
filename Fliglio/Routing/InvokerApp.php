@@ -46,7 +46,6 @@ class InvokerApp extends App {
 
 
 		$to = $rMethod->invokeArgs($instance, $methodArgs);
-		// $to = call_user_func_array(array($instance, $methodName), $methodArgs);
 		
 		if (is_object($to)) {
 			$reflector = new \ReflectionClass(get_class($to));

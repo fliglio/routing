@@ -5,7 +5,7 @@ use Fliglio\Web\Uri;
 use Fliglio\Web\HttpAttributes;
 use Fliglio\Routing\RouteMap;
 use Fliglio\Routing\PatternRoute;
-use Fliglio\Routing\RouteBuilder;
+use Fliglio\Routing\Type\RouteBuilder;
 
 class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 

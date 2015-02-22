@@ -9,6 +9,7 @@ use Fliglio\Flfc\App;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
 use Fliglio\Flfc\Response;
+use Fliglio\Routing\Type\RouteBuilder;
 
 class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 

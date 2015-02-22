@@ -1,6 +1,6 @@
 <?php
 
-namespace Fliglio\Routing;
+namespace Fliglio\Routing\Type;
 
 use Fliglio\Web\Uri;
 use Fliglio\Web\HttpAttributes;

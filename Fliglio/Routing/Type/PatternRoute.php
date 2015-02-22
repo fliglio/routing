@@ -1,6 +1,6 @@
 <?php
 
-namespace Fliglio\Routing;
+namespace Fliglio\Routing\Type;
 
 use Fliglio\Web\Uri;
 
@@ -33,7 +33,7 @@ class PatternRoute extends Route {
 	 */
 	private function parse($pattern) {
 		return array(
-			'/^' . preg_replace_callback('/\\\:(\w+)/', 'Fliglio\Routing\PatternRoute::__parser_callback', preg_quote($pattern, '/')) . '$/',
+			'/^' . preg_replace_callback('/\\\:(\w+)/', 'Fliglio\Routing\Type\PatternRoute::__parser_callback', preg_quote($pattern, '/')) . '$/',
 			self::__parser_callback(null, true) 
 		);
 	}
