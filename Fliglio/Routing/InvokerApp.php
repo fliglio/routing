@@ -17,24 +17,36 @@ class InvokerApp extends App {
 	
 	public function call(Context $context) {
 		$cmd = $context->getRequest()->getCommand();
-		list($ns, $commandGroup, $methodName) = explode('.', $context->getRequest()->getCommand());
+		list($ns, $name, $methodName) = explode('.', $context->getRequest()->getCommand());
 		
-		$className = $ns . '\\' . $commandGroup;
-		
-		
-		$instance  = new $className();
-		
-		
-		if (!method_exists($instance, $methodName)) {
-			throw new CommandNotFoundException("Method '{$methodName}' does not exist (".$methodName.")");
-		}
+		$className = $ns . '\\' . $name;
 		
 		$routeParams = $context->getRequest()->getProp('routeParams');
 		$getParams = $_GET;
-		$methodArgs = self::getMethodArgs($context, $className, $methodName, $routeParams, $getParams);
+		
+		$rConst = new \ReflectionMethod($className, '__construct');
+		$constructorArgs = self::getMethodArgs($rConst, $context, $routeParams, $getParams);
+		$instance;
+	
+	    try {
+			$rClass = new \ReflectionClass($className);
+			if (!$rClass->hasMethod($methodName)) {
+				throw new CommandNotFoundException("Method '{$methodName}' does not exist (".$methodName.")");
+			}
+
+			$instance = $rClass->newInstanceArgs($constructorArgs);
+	    } catch (ReflectionException $Exception) {
+			throw new CommandNotFoundException("Class '{$className}' does not exist (".$className.")");
+	    }
 
 
-		$to = call_user_func_array(array($instance, $methodName), $methodArgs);
+		
+		$rMethod = new \ReflectionMethod($className, $methodName);
+		$methodArgs = self::getMethodArgs($rMethod, $context, $routeParams, $getParams);
+
+
+		$to = $rMethod->invokeArgs($instance, $methodArgs);
+		// $to = call_user_func_array(array($instance, $methodName), $methodArgs);
 		
 		if (is_object($to)) {
 			$reflector = new \ReflectionClass(get_class($to));
@@ -46,11 +58,10 @@ class InvokerApp extends App {
 		return $to;
 	}
 
-	private static function getMethodArgs(Context $context, $className, $methodName, $routeParams, $getParams) {
+	private static function getMethodArgs(\ReflectionMethod $rMethod, Context $context, $routeParams, $getParams) {
 		$methodArgs = array();
 
-		$r = new \ReflectionMethod($className, $methodName);
-		$params = $r->getParameters();
+		$params = $rMethod->getParameters();
 		
 		foreach ($params as $param) {
 			//$param is an instance of ReflectionParameter
