@@ -26,12 +26,6 @@ class RouteMap {
 		$this->indexed[$key] = $route;
 		return $this;
 	}
-	private function getRouteByKey($key) {
-		if (!isset($this->indexed[$key])) {
-			throw new RouteException("Route '{$key}' does not exist");
-		}
-		return $this->indexed[$key];
-	}
 	public function getRoute(Uri $request, $method) {
 		if (substr((string)$request, 0, 1) === '@') {
 			$key = substr((string)$request, 1);
@@ -43,6 +37,13 @@ class RouteMap {
 			}
 		}
 		throw new RouteException("Route Not Found");
+	}
+
+	private function getRouteByKey($key) {
+		if (!isset($this->indexed[$key])) {
+			throw new RouteException("Route '{$key}' does not exist");
+		}
+		return $this->indexed[$key];
 	}
 
 }

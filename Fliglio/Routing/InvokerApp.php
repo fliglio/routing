@@ -14,7 +14,6 @@ use Fliglio\Routing\Input\GetParam;
  */
 class InvokerApp extends App {
 	
-	
 	public function call(Context $context) {
 		$cmd = $context->getRequest()->getCommand();
 		list($ns, $name, $methodName) = explode('.', $context->getRequest()->getCommand());
@@ -40,7 +39,6 @@ class InvokerApp extends App {
 	    }
 
 
-		
 		$rMethod = new \ReflectionMethod($className, $methodName);
 		$methodArgs = self::getMethodArgs($rMethod, $context, $routeParams, $getParams);
 
