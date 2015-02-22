@@ -47,12 +47,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/web.git",
-                "reference": "6e5ed18681aaa4dd1e58716724bf66af8cab9372"
+                "reference": "f1daed4178c941d69cccb84c7de9b45f8f61b10e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/web/zipball/6e5ed18681aaa4dd1e58716724bf66af8cab9372",
-                "reference": "6e5ed18681aaa4dd1e58716724bf66af8cab9372",
+                "url": "https://api.github.com/repos/fliglio/web/zipball/f1daed4178c941d69cccb84c7de9b45f8f61b10e",
+                "reference": "f1daed4178c941d69cccb84c7de9b45f8f61b10e",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +77,7 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-02-20 16:50:53"
+            "time": "2015-02-20 22:04:51"
         }
     ],
     "packages-dev": [
