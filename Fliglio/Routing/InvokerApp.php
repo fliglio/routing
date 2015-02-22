@@ -29,10 +29,6 @@ class InvokerApp extends App {
 			throw new CommandNotFoundException("Method '{$methodName}' does not exist (".$methodName.")");
 		}
 		
-		if (!($instance instanceof Routable)) {
-			throw new CommandNotRoutableException("CommandGroups must implement Fliglio\Flfc\Routable: " . $className);
-		}
-		
 		$routeParams = $context->getRequest()->getProp('routeParams');
 		$getParams = $_GET;
 		$methodArgs = self::getMethodArgs($context, $className, $methodName, $routeParams, $getParams);
