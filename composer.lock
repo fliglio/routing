@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/flfc.git",
-                "reference": "4585249d4bed083af1360263d3dab78817a46ace"
+                "reference": "d58251df7e6f8ac6e1587e3f2a1b9d587ce37aa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/flfc/zipball/4585249d4bed083af1360263d3dab78817a46ace",
-                "reference": "4585249d4bed083af1360263d3dab78817a46ace",
+                "url": "https://api.github.com/repos/fliglio/flfc/zipball/d58251df7e6f8ac6e1587e3f2a1b9d587ce37aa8",
+                "reference": "d58251df7e6f8ac6e1587e3f2a1b9d587ce37aa8",
                 "shasum": ""
             },
             "require": {
@@ -39,7 +39,7 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-02-24 16:52:28"
+            "time": "2015-02-24 18:53:11"
         },
         {
             "name": "fliglio/web",
@@ -47,12 +47,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/web.git",
-                "reference": "f1daed4178c941d69cccb84c7de9b45f8f61b10e"
+                "reference": "38d9ab85240420852cf016a13498d678957955e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/web/zipball/f1daed4178c941d69cccb84c7de9b45f8f61b10e",
-                "reference": "f1daed4178c941d69cccb84c7de9b45f8f61b10e",
+                "url": "https://api.github.com/repos/fliglio/web/zipball/38d9ab85240420852cf016a13498d678957955e4",
+                "reference": "38d9ab85240420852cf016a13498d678957955e4",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +77,7 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-02-20 22:04:51"
+            "time": "2015-02-24 18:52:22"
         }
     ],
     "packages-dev": [

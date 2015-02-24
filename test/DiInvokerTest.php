@@ -10,8 +10,6 @@ use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
 use Fliglio\Flfc\Response;
 use Fliglio\Routing\Type\RouteBuilder;
-use Fliglio\Routing\RouteMap;
-use Fliglio\Routing\RoutingApp;
 
 class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 
@@ -21,13 +19,15 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 
 	public function setup() {
 		$this->request = new Request();
+		$this->request->setProtocol(HttpAttributes::HTTP);
+		$this->request->setHttpMethod(HttpAttributes::METHOD_GET);
 		$this->context = new Context($this->request, new Response());
 
 		$this->routeMap = new RouteMap();
 		$this->routeMap
 			->connect('ex', RouteBuilder::get()
 				->uri('/foo/:id')
-				->command('Fliglio\RestFc.StubResource.getFoo')
+				->command('Fliglio\Routing.StubResource.getFoo')
 				->method(HttpAttributes::METHOD_GET)
 				->build()
 			);
