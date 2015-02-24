@@ -13,8 +13,10 @@ use Fliglio\Web\HttpAttributes;
 class DefaultInvokerApp extends App {
 	
 	public function call(Context $context) {
-		$cmd = $context->getRequest()->getCommand();
-		list($ns, $name, $methodName) = explode('.', $context->getRequest()->getCommand());
+		$route = $context->getRequest()->getProp(RoutingApp::CURRENT_ROUTE);
+		$cmd = $route->getCommand();
+
+		list($ns, $name, $methodName) = explode('.', $cmd);
 		
 		$className = $ns . '\\' . $name;
 		

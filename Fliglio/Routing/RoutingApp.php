@@ -2,7 +2,6 @@
 namespace Fliglio\Routing;
 
 use Fliglio\Web\Uri;
-use Fliglio\Web\HttpAttributes;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Apps\MiddleWare;
 use Fliglio\Flfc\Apps\App;
@@ -22,10 +21,13 @@ class RoutingApp extends MiddleWare {
 	}
 	
 	public function call(Context $context) {
+		$currentHost = $context->getRequest()->getHost();
+		$currentProtocol = $context->getRequest()->getProtocol();
 		$currentUrl = $context->getRequest()->getCurrentUrl();
+		$currentMethod = $context->getRequest()->getHttpMethod();
 
 		// Identify current Command; register RouteMap & params with Context
-		$route = $this->routeMap->getRoute(new Uri($currentUrl), HttpAttributes::getMethod());
+		$route = $this->routeMap->getRoute(new Uri($currentUrl), $currentMethod);
 		$params = $route->getParams();
 
 		$context->getRequest()->setProp(self::CURRENT_ROUTE, $route);
@@ -33,16 +35,14 @@ class RoutingApp extends MiddleWare {
 
 		// Force pages to their designated protocol if specified
 		if ($route->getProtocol() != null) {
-			if (HttpAttributes::getProtocol() != $route->getProtocol()) {
-				$url = Uri::get(sprintf("%s://%s/", $route->getProtocol(), HttpAttributes::getHttpHost()))
+			if ($currentProtocol != $route->getProtocol()) {
+				$url = Uri::get(sprintf("%s://%s/", $route->getProtocol(), $currentHost))
 						->join($currentUrl)
 						->addParams($_GET);
 				throw new RedirectException('Change Protocol', 301, $url);
 			}
 		}
 
-		// Register command
-		$context->getRequest()->setCommand($route->getCommand());
 		$this->wrappedApp->call($context);
 	}
 }

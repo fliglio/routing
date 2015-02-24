@@ -14,12 +14,14 @@ class UriLintApp extends MiddleWare {
 	
 	public function call(Context $context) {
 		$currentUrl = $context->getRequest()->getCurrentUrl();
-		
+		$currentMethod = $context->getRequest()->getHttpMethod();
 		// Strip trailing "/", adding back in namespace if necessary
-		if (HttpAttributes::getMethod() == HttpAttributes::METHOD_GET) {
+		if ($currentMethod == HttpAttributes::METHOD_GET) {
 			if (substr($currentUrl, -1) == '/' && $currentUrl != '/') {
 
-				$url = Uri::get(sprintf("%s://%s/", HttpAttributes::getProtocol(), HttpAttributes::getHttpHost()))
+				$protocol = $context->getRequest()->getProtocol();
+				$host = $context->getRequest()->getHost();
+				$url = Uri::get(sprintf("%s://%s/", $protocol, $host))
 						->join(rtrim($currentUrl, '/'))
 						->addParams($_GET);
 			
