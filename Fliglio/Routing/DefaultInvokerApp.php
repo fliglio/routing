@@ -2,7 +2,7 @@
 
 namespace Fliglio\Routing;
 
-use Fliglio\Flfc\CommandNotFoundException;
+use Fliglio\Flfc\Exceptions\CommandNotFoundException;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\App;
 use Fliglio\Web\HttpAttributes;

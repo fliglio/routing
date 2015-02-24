@@ -4,8 +4,8 @@ namespace Fliglio\Routing;
 
 use Fliglio\Web\Uri;
 use Fliglio\Web\HttpAttributes;
-use Fliglio\Flfc\RedirectException;
-use Fliglio\Flfc\App;
+use Fliglio\Flfc\Exceptions\RedirectException;
+use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
 use Fliglio\Flfc\Response;

@@ -3,9 +3,9 @@ namespace Fliglio\Routing;
 
 use Fliglio\Web\Uri;
 use Fliglio\Web\HttpAttributes;
-use Fliglio\Flfc\MiddleWare;
+use Fliglio\Flfc\Apps\MiddleWare;
 use Fliglio\Flfc\Context;
-use Fliglio\Flfc\RedirectException;
+use Fliglio\Flfc\Exceptions\RedirectException;
 
 /**
  * 
