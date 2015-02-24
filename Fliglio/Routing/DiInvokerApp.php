@@ -43,16 +43,7 @@ class DiInvokerApp extends App {
 		$methodArgs = self::getMethodArgs($rMethod, $context, $routeParams, $getParams);
 
 
-		$to = $rMethod->invokeArgs($instance, $methodArgs);
-		
-		if (is_object($to)) {
-			$reflector = new \ReflectionClass(get_class($to));
-			if ($reflector->implementsInterface("Fliglio\Flfc\ResponseContent")) {
-				$context->getResponse()->setContent($to);
-			}
-		}
-		
-		return $to;
+		return $rMethod->invokeArgs($instance, $methodArgs);
 	}
 
 	private static function getMethodArgs(\ReflectionMethod $rMethod, Context $context, $routeParams, $getParams) {

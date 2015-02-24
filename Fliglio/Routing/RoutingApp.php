@@ -6,6 +6,7 @@ use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Apps\MiddleWare;
 use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Exceptions\RedirectException;
+use Fliglio\Flfc\Exceptions\PageNotFoundException;
 
 /**
  * 

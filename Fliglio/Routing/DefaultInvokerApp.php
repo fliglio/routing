@@ -40,15 +40,6 @@ class DefaultInvokerApp extends App {
 		$rMethod = new \ReflectionMethod($className, $methodName);
 
 
-		$to = $rMethod->invoke($instance);
-		
-		if (is_object($to)) {
-			$reflector = new \ReflectionClass(get_class($to));
-			if ($reflector->implementsInterface("Fliglio\Flfc\ResponseContent")) {
-				$context->getResponse()->setContent($to);
-			}
-		}
-		
-		return $to;
+		return $rMethod->invoke($instance);
 	}
 }
