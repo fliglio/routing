@@ -27,7 +27,15 @@ class RoutingApp extends MiddleWare {
 		$currentMethod = $context->getRequest()->getHttpMethod();
 
 		// Identify current Command; register RouteMap & params with Context
-		$route = $this->routeMap->getRoute(new Uri($currentUrl), $currentMethod);
+		$route;
+		try {
+			$route = $this->routeMap->getRoute(new Uri($currentUrl), $currentMethod);
+		} catch (RouteException $e) {
+			throw new PageNotFoundException(sprintf(
+				"Route not found for request: %s %s://%s%s",
+				$currentMethod, $currentProtocol, $currentHost, $currentUrl 
+			));
+		}
 		$params = $route->getParams();
 
 		$context->getRequest()->setProp(self::CURRENT_ROUTE, $route);
