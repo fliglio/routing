@@ -39,8 +39,8 @@ class RoutingApp extends MiddleWare {
 		}
 		$params = $route->getParams();
 
-		$context->getRequest()->setProp(self::CURRENT_ROUTE, $route);
-		$context->getRequest()->setProp(self::ROUTE_PARAMS, $params);
+		$context->setProp(self::CURRENT_ROUTE, $route);
+		$context->setProp(self::ROUTE_PARAMS, $params);
 
 		// Force pages to their designated protocol if specified
 		if ($route->getProtocol() != null) {

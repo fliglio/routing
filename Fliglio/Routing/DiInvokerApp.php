@@ -14,13 +14,13 @@ use Fliglio\Routing\RoutingApp;
 class DiInvokerApp extends App {
 	
 	public function call(Context $context) {
-		$route = $context->getRequest()->getProp(RoutingApp::CURRENT_ROUTE);
+		$route = $context->getProp(RoutingApp::CURRENT_ROUTE);
 		$cmd = $route->getCommand();
 		list($ns, $name, $methodName) = explode('.', $cmd);
 		
 		$className = $ns . '\\' . $name;
 		
-		$routeParams = $context->getRequest()->getProp('routeParams');
+		$routeParams = $route->getParams();
 		$getParams = $_GET;
 		
 		$rConst = new \ReflectionMethod($className, '__construct');
@@ -57,13 +57,10 @@ class DiInvokerApp extends App {
 			$paramClass = $param->getClass();
 
 			switch ($paramClass->getName()) {
-			case 'Fliglio\Flfc\Context':
-				$methodArgs[] = $context;
-				break;
-			case 'Fliglio\Flfc\Request':
+			case 'Fliglio\Htto\RequestReader':
 				$methodArgs[] = $context->getRequest();
 				break;
-			case 'Fliglio\Flfc\Response':
+			case 'Fliglio\Http\ResponseWriter':
 				$methodArgs[] = $context->getResponse();
 				break;
 			case 'Fliglio\Routing\Input\RouteParam':
