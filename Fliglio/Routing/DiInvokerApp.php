@@ -3,6 +3,7 @@
 namespace Fliglio\Routing;
 
 use Fliglio\Flfc\Context;
+use Fliglio\Flfc\RawView;
 use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Exceptions\CommandNotFoundException;
 use Fliglio\Routing\Input\RouteParam;
@@ -30,7 +31,7 @@ class DiInvokerApp extends App {
 		$methodArgs = self::getMethodArgs($rMethod, $context, $routeParams, $getParams);
 
 		$to = $rMethod->invokeArgs($instance, $methodArgs);
-		$context->setProp('rawResponse', $to);
+		$context->getResponse()->setBody(new RawView($to));
 	}
 
 	private static function getReflectionMethod($className, $methodName) {

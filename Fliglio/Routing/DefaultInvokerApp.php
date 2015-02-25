@@ -41,6 +41,6 @@ class DefaultInvokerApp extends App {
 
 
 		$to = $rMethod->invoke($instance);
-		$context->setProp('rawResponse', $to);
+		$context->getResponse()->setBody(new RawView($to));
 	}
 }
