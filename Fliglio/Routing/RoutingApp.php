@@ -24,7 +24,7 @@ class RoutingApp extends MiddleWare {
 	public function call(Context $context) {
 		$currentHost = $context->getRequest()->getHost();
 		$currentProtocol = $context->getRequest()->getProtocol();
-		$currentUrl = $context->getRequest()->getCurrentUrl();
+		$currentUrl = $context->getRequest()->getUrl();
 		$currentMethod = $context->getRequest()->getHttpMethod();
 
 		// Identify current Command; register RouteMap & params with Context
