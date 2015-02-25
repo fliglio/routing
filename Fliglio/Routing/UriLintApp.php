@@ -13,7 +13,7 @@ use Fliglio\Flfc\Exceptions\RedirectException;
 class UriLintApp extends MiddleWare {
 	
 	public function call(Context $context) {
-		$currentUrl = $context->getRequest()->getCurrentUrl();
+		$currentUrl = $context->getRequest()->getUrl();
 		$currentMethod = $context->getRequest()->getHttpMethod();
 		// Strip trailing "/", adding back in namespace if necessary
 		if ($currentMethod == HttpAttributes::METHOD_GET) {
