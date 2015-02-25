@@ -40,6 +40,7 @@ class DefaultInvokerApp extends App {
 		$rMethod = new \ReflectionMethod($className, $methodName);
 
 
-		return $rMethod->invoke($instance);
+		$to = $rMethod->invoke($instance);
+		$context->setProp('rawResponse', $to);
 	}
 }

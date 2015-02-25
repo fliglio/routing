@@ -29,7 +29,8 @@ class DiInvokerApp extends App {
 		$rMethod = self::getReflectionMethod($className, $methodName);
 		$methodArgs = self::getMethodArgs($rMethod, $context, $routeParams, $getParams);
 
-		return $rMethod->invokeArgs($instance, $methodArgs);
+		$to = $rMethod->invokeArgs($instance, $methodArgs);
+		$context->setProp('rawResponse', $to);
 	}
 
 	private static function getReflectionMethod($className, $methodName) {

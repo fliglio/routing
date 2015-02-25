@@ -52,6 +52,6 @@ class RoutingApp extends MiddleWare {
 			}
 		}
 
-		return $this->wrappedApp->call($context);
+		$this->wrappedApp->call($context);
 	}
 }

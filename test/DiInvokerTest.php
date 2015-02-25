@@ -52,7 +52,8 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
 		// when
-		$result = $app->call($this->context);
+		$app->call($this->context);
+		$result = $this->context->getProp('rawResponse');
 		
 		// then
 		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
@@ -64,7 +65,8 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
 		// when
-		$result = $app->call($this->context);
+		$app->call($this->context);
+		$result = $this->context->getProp('rawResponse');
 		
 		// then
 		$this->assertEquals('123', $result['id']);
@@ -77,7 +79,8 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
 		// when
-		$result = $app->call($this->context);
+		$app->call($this->context);
+		$result = $this->context->getProp('rawResponse');
 		
 		// then
 		$this->assertEquals('foo', $result['type']);
@@ -90,7 +93,8 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
 		// when
-		$result = $app->call($this->context);
+		$app->call($this->context);
+		$result = $this->context->getProp('rawResponse');
 		
 		// then
 		$this->assertEquals(null, $result['type']);
@@ -102,7 +106,8 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
 		// when
-		$result = $app->call($this->context);
+		$app->call($this->context);
+		$result = $this->context->getProp('rawResponse');
 		
 		// then
 		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
@@ -117,10 +122,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
 		// when
-		$result = $app->call($this->context);
-		
-		// then
-		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
+		$app->call($this->context);
 	}
 
 }
