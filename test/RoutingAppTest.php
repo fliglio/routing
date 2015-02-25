@@ -48,13 +48,13 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function getRouteFromUrl($url) {
-		$this->request->setCurrentUrl($url);
+		$this->request->setUrl($url);
 
 		$app = new RoutingApp(new StubApp, $this->routeMap);
 
 		$app->call($this->context);
 
-		return $this->context->getRequest()->getProp(RoutingApp::CURRENT_ROUTE);
+		return $this->context->getProp(RoutingApp::CURRENT_ROUTE);
 	}
 
 	public function testPatternRoute() {

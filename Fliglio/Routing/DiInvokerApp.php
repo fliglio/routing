@@ -23,29 +23,28 @@ class DiInvokerApp extends App {
 		$routeParams = $route->getParams();
 		$getParams = $_GET;
 		
-		$rConst = new \ReflectionMethod($className, '__construct');
-		$constructorArgs = self::getMethodArgs($rConst, $context, $routeParams, $getParams);
-		$instance;
+		$instance = new $className();
 	
-	    try {
-			$rClass = new \ReflectionClass($className);
-			if (!$rClass->hasMethod($methodName)) {
-				throw new CommandNotFoundException("Method '{$methodName}' does not exist (".$methodName.")");
-			}
 
-			$instance = $rClass->newInstanceArgs($constructorArgs);
-	    } catch (ReflectionException $Exception) {
-			throw new CommandNotFoundException("Class '{$className}' does not exist (".$className.")");
-	    }
-
-
-		$rMethod = new \ReflectionMethod($className, $methodName);
+		$rMethod = self::getReflectionMethod($className, $methodName);
 		$methodArgs = self::getMethodArgs($rMethod, $context, $routeParams, $getParams);
-
 
 		return $rMethod->invokeArgs($instance, $methodArgs);
 	}
 
+	private static function getReflectionMethod($className, $methodName) {
+		try {
+			return new \ReflectionMethod($className, $methodName);
+		} catch (\ReflectionException $e) {
+			$rClass = new \ReflectionClass($className);
+			$parentRClass = $rClass->getParentClass();
+			if (!is_object($parentRClass)) {
+				throw new CommandNotFoundException("Method '{$methodName}' does not exist");
+			}
+			$parentClassName = $parentRClass->getName();
+			return self::getReflectionMethod($parentClassName, $methodName);
+		}
+	}
 	private static function getMethodArgs(\ReflectionMethod $rMethod, Context $context, $routeParams, $getParams) {
 		$methodArgs = array();
 
@@ -57,7 +56,7 @@ class DiInvokerApp extends App {
 			$paramClass = $param->getClass();
 
 			switch ($paramClass->getName()) {
-			case 'Fliglio\Htto\RequestReader':
+			case 'Fliglio\Http\RequestReader':
 				$methodArgs[] = $context->getRequest();
 				break;
 			case 'Fliglio\Http\ResponseWriter':
@@ -65,7 +64,7 @@ class DiInvokerApp extends App {
 				break;
 			case 'Fliglio\Routing\Input\RouteParam':
 				if (!isset($routeParams[$paramName])) {
-					throw new \Exception("route param ".$paramName." does not exist");
+					throw new \CommandNotFoundException("No suitable method signature found: Route param ".$paramName." does not exist");
 				}	
 				$methodArgs[] = new RouteParam($routeParams[$paramName]);
 				
@@ -73,14 +72,14 @@ class DiInvokerApp extends App {
 			case 'Fliglio\Routing\Input\GetParam':
 				if (!isset($getParams[$paramName])) {
 					if (!$param->isOptional()) {
-						throw new \Exception("get param ".$paramName." does not exist");
+						throw new \CommandNotFoundException("No suitable method signature found: GET param ".$paramName." does not exist");
 					}
 				} else {
 					$methodArgs[] = new GetParam($getParams[$paramName]);
 				}
 				break;	
 			default:
-				throw new \Exception("Type ".$paramClass->getName()." not recognized");
+				throw new \CommandNotFoundException("No suitable method signature found: Type ".$paramClass->getName()." not recognized");
 			}
 		}
 		return $methodArgs;

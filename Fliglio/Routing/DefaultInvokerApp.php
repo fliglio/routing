@@ -32,7 +32,7 @@ class DefaultInvokerApp extends App {
 				throw new CommandNotFoundException("Method '{$methodName}' does not exist (".$methodName.")");
 			}
 
-			$instance = $rClass->newInstance($context);
+			$instance = new $className();
 	    } catch (ReflectionException $Exception) {
 			throw new CommandNotFoundException("Class '{$className}' does not exist (".$className.")");
 	    }

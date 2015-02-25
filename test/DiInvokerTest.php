@@ -30,12 +30,36 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 				->command('Fliglio\Routing.StubResource.getFoo')
 				->method(HttpAttributes::METHOD_GET)
 				->build()
+			)
+			->connect('ex2', RouteBuilder::get()
+				->uri('/bar/:id')
+				->command('Fliglio\Routing.StubResourceChild.getFoo')
+				->method(HttpAttributes::METHOD_GET)
+				->build()
+			)
+			->connect('bad', RouteBuilder::get()
+				->uri('/baz/:id')
+				->command('Fliglio\Routing.StubResource.getFlub')
+				->method(HttpAttributes::METHOD_GET)
+				->build()
 			);
 
 	}
 
-	public function testRouteParam() {
-		$this->request->setCurrentUrl('/foo/123');
+	public function testRequestInjection() {
+		$this->request->setUrl('/foo/123');
+
+		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+
+		// when
+		$result = $app->call($this->context);
+		
+		// then
+		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
+	}
+
+	public function testRouteParamInjection() {
+		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
@@ -46,9 +70,9 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('123', $result['id']);
 	}
 
-	public function testGetParam() {
+	public function testGetParamInjection() {
 		$_GET['type'] = "foo";
-		$this->request->setCurrentUrl('/foo/123');
+		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
@@ -59,9 +83,9 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('foo', $result['type']);
 	}
 
-	public function testOptionalGetParam() {
+	public function testOptionalGetParamInjection() {
 		unset($_GET['type']);
-		$this->request->setCurrentUrl('/foo/123');
+		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
 
@@ -71,4 +95,32 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		// then
 		$this->assertEquals(null, $result['type']);
 	}
+
+	public function testInheritance() {
+		$this->request->setUrl('/bar/123');
+
+		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+
+		// when
+		$result = $app->call($this->context);
+		
+		// then
+		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
+	}
+
+	/**
+	 * @expectedException Fliglio\Flfc\Exceptions\CommandNotFoundException
+	 */
+	public function testMethodNotFound() {
+		$this->request->setUrl('/baz/123');
+
+		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+
+		// when
+		$result = $app->call($this->context);
+		
+		// then
+		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
+	}
+
 }

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb2a17424e67152466019ba5f5c80ebb",
+    "hash": "76fca80bab35d1837f71f6b756efac1d",
     "packages": [
         {
             "name": "fliglio/flfc",
@@ -12,15 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/flfc.git",
-                "reference": "d58251df7e6f8ac6e1587e3f2a1b9d587ce37aa8"
+                "reference": "52be46800c2188a68e65aedca8a1cf819600a45e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/flfc/zipball/d58251df7e6f8ac6e1587e3f2a1b9d587ce37aa8",
-                "reference": "d58251df7e6f8ac6e1587e3f2a1b9d587ce37aa8",
+                "url": "https://api.github.com/repos/fliglio/flfc/zipball/52be46800c2188a68e65aedca8a1cf819600a45e",
+                "reference": "52be46800c2188a68e65aedca8a1cf819600a45e",
                 "shasum": ""
             },
             "require": {
+                "fliglio/http": "dev-master",
                 "php": ">=5.3"
             },
             "type": "library",
@@ -39,7 +40,45 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-02-24 18:53:11"
+            "time": "2015-02-25 17:12:09"
+        },
+        {
+            "name": "fliglio/http",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fliglio/http.git",
+                "reference": "5e0bd530a65c01d03b8398b10690c7385def0ce8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fliglio/http/zipball/5e0bd530a65c01d03b8398b10690c7385def0ce8",
+                "reference": "5e0bd530a65c01d03b8398b10690c7385def0ce8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Fliglio\\Http\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Schwartz",
+                    "email": "benschw@gmail.com"
+                }
+            ],
+            "time": "2015-02-25 17:08:46"
         },
         {
             "name": "fliglio/web",
@@ -828,6 +867,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "fliglio/web": 20,
+        "fliglio/http": 20,
         "fliglio/flfc": 20
     },
     "prefer-stable": false,
