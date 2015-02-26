@@ -11,7 +11,7 @@ use Fliglio\Flfc\Request;
 use Fliglio\Flfc\Response;
 use Fliglio\Routing\Type\RouteBuilder;
 
-class DiInvokerTest extends \PHPUnit_Framework_TestCase {
+class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 
 	private $request;
 	private $context;
@@ -53,7 +53,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 
 		// when
 		$app->call($this->context);
-		$result = $this->context->getProp('rawResponse');
+		$result = $this->context->getResponse()->getBody()->getContent();
 		
 		// then
 		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
@@ -66,7 +66,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 
 		// when
 		$app->call($this->context);
-		$result = $this->context->getProp('rawResponse');
+		$result = $this->context->getResponse()->getBody()->getContent();
 		
 		// then
 		$this->assertEquals('123', $result['id']);
@@ -80,7 +80,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 
 		// when
 		$app->call($this->context);
-		$result = $this->context->getProp('rawResponse');
+		$result = $this->context->getResponse()->getBody()->getContent();
 		
 		// then
 		$this->assertEquals('foo', $result['type']);
@@ -94,7 +94,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 
 		// when
 		$app->call($this->context);
-		$result = $this->context->getProp('rawResponse');
+		$result = $this->context->getResponse()->getBody()->getContent();
 		
 		// then
 		$this->assertEquals(null, $result['type']);
@@ -107,7 +107,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 
 		// when
 		$app->call($this->context);
-		$result = $this->context->getProp('rawResponse');
+		$result = $this->context->getResponse()->getBody()->getContent();
 		
 		// then
 		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);

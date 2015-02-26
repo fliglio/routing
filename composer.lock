@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/flfc.git",
-                "reference": "175750b8944eb32f5247ef947660ecf27be983f3"
+                "reference": "e94cdd9ff8e090adc972c2eea71f05075fda94f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/flfc/zipball/175750b8944eb32f5247ef947660ecf27be983f3",
-                "reference": "175750b8944eb32f5247ef947660ecf27be983f3",
+                "url": "https://api.github.com/repos/fliglio/flfc/zipball/e94cdd9ff8e090adc972c2eea71f05075fda94f4",
+                "reference": "e94cdd9ff8e090adc972c2eea71f05075fda94f4",
                 "shasum": ""
             },
             "require": {
@@ -40,7 +40,7 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-02-25 18:04:46"
+            "time": "2015-02-26 17:10:07"
         },
         {
             "name": "fliglio/http",
@@ -48,12 +48,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/http.git",
-                "reference": "5e0bd530a65c01d03b8398b10690c7385def0ce8"
+                "reference": "d8edbb120ced76162e97f470a988209e74a84af8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/http/zipball/5e0bd530a65c01d03b8398b10690c7385def0ce8",
-                "reference": "5e0bd530a65c01d03b8398b10690c7385def0ce8",
+                "url": "https://api.github.com/repos/fliglio/http/zipball/d8edbb120ced76162e97f470a988209e74a84af8",
+                "reference": "d8edbb120ced76162e97f470a988209e74a84af8",
                 "shasum": ""
             },
             "require": {
@@ -78,7 +78,7 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-02-25 17:08:46"
+            "time": "2015-02-26 17:10:35"
         },
         {
             "name": "fliglio/web",
