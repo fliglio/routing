@@ -49,7 +49,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 	public function testRequestInjection() {
 		$this->request->setUrl('/foo/123');
 
-		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
 
 		// when
 		$app->call($this->context);
@@ -62,7 +62,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 	public function testRouteParamInjection() {
 		$this->request->setUrl('/foo/123');
 
-		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
 
 		// when
 		$app->call($this->context);
@@ -76,7 +76,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		$_GET['type'] = "foo";
 		$this->request->setUrl('/foo/123');
 
-		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
 
 		// when
 		$app->call($this->context);
@@ -90,7 +90,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 		unset($_GET['type']);
 		$this->request->setUrl('/foo/123');
 
-		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
 
 		// when
 		$app->call($this->context);
@@ -103,7 +103,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 	public function testInheritance() {
 		$this->request->setUrl('/bar/123');
 
-		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
 
 		// when
 		$app->call($this->context);
@@ -119,7 +119,7 @@ class DiInvokerTest extends \PHPUnit_Framework_TestCase {
 	public function testMethodNotFound() {
 		$this->request->setUrl('/baz/123');
 
-		$app = new RoutingApp(new DiInvokerApp(), $this->routeMap);
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
 
 		// when
 		$app->call($this->context);
