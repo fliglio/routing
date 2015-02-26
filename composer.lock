@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/flfc.git",
-                "reference": "e94cdd9ff8e090adc972c2eea71f05075fda94f4"
+                "reference": "6144254d6779124c676e377b880323fe26062994"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/flfc/zipball/e94cdd9ff8e090adc972c2eea71f05075fda94f4",
-                "reference": "e94cdd9ff8e090adc972c2eea71f05075fda94f4",
+                "url": "https://api.github.com/repos/fliglio/flfc/zipball/6144254d6779124c676e377b880323fe26062994",
+                "reference": "6144254d6779124c676e377b880323fe26062994",
                 "shasum": ""
             },
             "require": {
@@ -40,7 +40,7 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-02-26 17:10:07"
+            "time": "2015-02-26 18:53:53"
         },
         {
             "name": "fliglio/http",

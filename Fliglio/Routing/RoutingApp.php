@@ -30,17 +30,15 @@ class RoutingApp extends MiddleWare {
 		// Identify current Command; register RouteMap & params with Context
 		$route;
 		try {
-			$route = $this->routeMap->getRoute(new Uri($currentUrl), $currentMethod);
+			$route = $this->routeMap->getRoute($context->getRequest());
 		} catch (RouteException $e) {
 			throw new PageNotFoundException(sprintf(
 				"Route not found for request: %s %s://%s%s",
 				$currentMethod, $currentProtocol, $currentHost, $currentUrl 
 			));
 		}
-		$params = $route->getParams();
 
 		$context->setProp(self::CURRENT_ROUTE, $route);
-		$context->setProp(self::ROUTE_PARAMS, $params);
 
 		// Force pages to their designated protocol if specified
 		if ($route->getProtocol() != null) {

@@ -19,6 +19,7 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 
 	public function setup() {
 		$this->request = new Request();
+		$this->request->setHttpMethod(HttpAttributes::METHOD_GET);
 		$this->context = new Context($this->request, new Response());
 
 		$this->routeMap = new RouteMap();

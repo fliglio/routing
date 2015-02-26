@@ -3,6 +3,7 @@
 namespace Fliglio\Routing\Type;
 
 use Fliglio\Web\Uri;
+use Fliglio\Http\RequestReader;
 
 class StaticRoute extends Route {
 
@@ -14,7 +15,10 @@ class StaticRoute extends Route {
 		$this->criteria = $criteria;
 	}
 	
-	public function match(Uri $input, $method) {
-		return (string)$input === $this->criteria;
+	public function match(RequestReader $req) {
+		if (!parent::match($req)) {
+			return false;
+		}
+		return (string)$req->getUrl() === $this->criteria;
 	}
 }

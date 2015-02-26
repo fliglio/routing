@@ -4,6 +4,7 @@ namespace Fliglio\Routing\Type;
 
 use Fliglio\Web\Uri;
 use Fliglio\Web\HttpAttributes;
+use Fliglio\Http\RequestReader;
 
 abstract class Route {
 	private $params;
@@ -23,8 +24,8 @@ abstract class Route {
 		$this->params = $params;
 	}
 
-	public function match(Uri $input, $method) {
-		return in_array($method, $this->getMethods());
+	public function match(RequestReader $req) {
+		return in_array($req->getHttpMethod(), $this->getMethods());
 	}
 
 

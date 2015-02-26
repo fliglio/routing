@@ -6,6 +6,7 @@ use Fliglio\Web\HttpAttributes;
 use Fliglio\Routing\RouteMap;
 use Fliglio\Routing\PatternRoute;
 use Fliglio\Routing\Type\RouteBuilder;
+use FLiglio\Flfc\Request;
 
 class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 
@@ -20,7 +21,11 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 				->build()
 			);
 
-		$route = $routeMap->getRoute(new Uri('/foo/123'), HttpAttributes::METHOD_GET);
+		$req = new Request();
+		$req->setUrl(new Uri('/foo/123'));
+		$req->setHttpMethod(HttpAttributes::METHOD_GET);
+
+		$route = $routeMap->getRoute($req);
 		$params = $route->getParams();
 
 		$this->assertEquals($params, array(

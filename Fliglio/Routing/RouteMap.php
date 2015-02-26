@@ -5,6 +5,7 @@ namespace Fliglio\Routing;
 use Fliglio\Web\Uri;
 use Fliglio\Web\HttpAttributes;
 use Fliglio\Routing\Type\Route;
+use Fliglio\Http\RequestReader;
 
 class RouteMap {
 		
@@ -26,13 +27,16 @@ class RouteMap {
 		$this->indexed[$key] = $route;
 		return $this;
 	}
-	public function getRoute(Uri $request, $method) {
-		if (substr((string)$request, 0, 1) === '@') {
-			$key = substr((string)$request, 1);
+	public function getRoute(RequestReader $request) {
+		$url = (string)$request->getUrl();
+		$method = $request->getHttpMethod();
+
+		if (substr($url, 0, 1) === '@') {
+			$key = substr($url, 1);
 			return $this->getRouteByKey($key);
 		}
 		foreach ($this->routes AS $route) {
-			if ($route->match($request, $method)) {
+			if ($route->match($request)) {
 				return $route;
 			}
 		}

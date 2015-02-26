@@ -3,6 +3,7 @@
 namespace Fliglio\Routing\Type;
 
 use Fliglio\Web\Uri;
+use Fliglio\Http\RequestReader;
 
 /**
  * Routing_PatternRoute
@@ -20,8 +21,7 @@ class PatternRoute extends Route {
 	public function __construct($pattern, array $params = array()) {
         parent::__construct($params);
 
-		list($regex, $this->toCapture) = $this->parse($pattern);
-		$this->regex = $regex;
+		$this->parse($pattern);
 	}
 
 	/**
@@ -29,48 +29,30 @@ class PatternRoute extends Route {
 	 * list of arguments that the regexp will capture.
 	 *
 	 * @param string $pattern Route pattern
-	 * @return array [the new regexp, captured parameter names]
 	 */
 	private function parse($pattern) {
-		return array(
-			'/^' . preg_replace_callback('/\\\:(\w+)/', 'Fliglio\Routing\Type\PatternRoute::__parser_callback', preg_quote($pattern, '/')) . '$/',
-			self::__parser_callback(null, true) 
+		$this->toCapture = array();
+
+		$regexInner = preg_replace_callback(
+			'/\\\:(\w+)/',
+			function(array $matches) {
+				$this->toCapture[] = $matches[1];
+				return '(?P<' . $matches[1] . '>[^\/]+)';
+			}, 
+			preg_quote($pattern, '/')
 		);
+		$this->regex = '/^' . $regexInner . '$/';
 	}
 
-	/**
-	 * This is a callback for Routing_PatternRoute::parse to collect "toCapture" matches.
-	 * It also does the regexp replacement string.
-	 *
-	 * @param array  $matches Matched items from the Routing_PatternRoute::parse regexp
-	 * @param bool   $flush   If true the stack will be flushed and returned
-	 * @return mixed Either the replacement string or the collect stack
-	 */
-	static private function __parser_callback($matches, $flush = false) {
-		static $stack = array();
-		
-		if ($flush) {
-			$stackFlush = $stack;
-			$stack = array();
-			return $stackFlush;
+	public function match(RequestReader $req) {
+		if (!parent::match($req)) {
+			return false;
 		}
-		else {
-			$stack[] = $matches[1];
-			return '(?P<' . $matches[1] . '>[^\/]+)';
-		}
-	}
 
-	public function getArgsToCapture() {
-		return $this->toCapture;
-	}
-
-
-	public function match(Uri $input, $method) {
-		if ((bool)preg_match($this->regex, (string)$input, $this->capturedArgs)) {
+		if ((bool)preg_match($this->regex, (string)$req->getUrl(), $this->capturedArgs)) {
 			$this->capturedArgs = array_intersect_key($this->capturedArgs, array_flip($this->toCapture));
 			return true;
-		} 
-		else {
+		} else {
 			return false;
 		}
 	}
