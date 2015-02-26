@@ -22,7 +22,7 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 			);
 
 		$req = new Request();
-		$req->setUrl(new Url('/foo/123'));
+		$req->setUrl(Url::fromString('/foo/123'));
 		$req->setHttpMethod(HttpAttributes::METHOD_GET);
 
 		$route = $routeMap->getRoute($req);
