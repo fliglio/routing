@@ -2,7 +2,7 @@
 namespace Fliglio\Routing;
 
 
-use Fliglio\Web\Uri;
+use Fliglio\Web\Url;
 use Fliglio\Web\HttpAttributes;
 use Fliglio\Flfc\Exceptions\RedirectException;
 use Fliglio\Flfc\Apps\App;

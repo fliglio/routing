@@ -1,7 +1,7 @@
 <?php
 
 
-use Fliglio\Web\Uri;
+use Fliglio\Web\Url;
 use Fliglio\Web\HttpAttributes;
 use Fliglio\Routing\RouteMap;
 use Fliglio\Routing\PatternRoute;
@@ -22,7 +22,7 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 			);
 
 		$req = new Request();
-		$req->setUrl(new Uri('/foo/123'));
+		$req->setUrl(new Url('/foo/123'));
 		$req->setHttpMethod(HttpAttributes::METHOD_GET);
 
 		$route = $routeMap->getRoute($req);

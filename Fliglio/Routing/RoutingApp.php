@@ -1,7 +1,7 @@
 <?php
 namespace Fliglio\Routing;
 
-use Fliglio\Web\Uri;
+use Fliglio\Web\Url;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Apps\MiddleWare;
 use Fliglio\Flfc\Apps\App;
@@ -43,7 +43,7 @@ class RoutingApp extends MiddleWare {
 		// Force pages to their designated protocol if specified
 		if ($route->getProtocol() != null) {
 			if ($currentProtocol != $route->getProtocol()) {
-				$url = Uri::get(sprintf("%s://%s/", $route->getProtocol(), $currentHost))
+				$url = Url::fromString(sprintf("%s://%s/", $route->getProtocol(), $currentHost))
 						->join($currentUrl)
 						->addParams($_GET);
 				throw new RedirectException('Change Protocol', 301, $url);

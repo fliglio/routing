@@ -1,7 +1,7 @@
 <?php
 namespace Fliglio\Routing;
 
-use Fliglio\Web\Uri;
+use Fliglio\Web\Url;
 use Fliglio\Web\HttpAttributes;
 use Fliglio\Flfc\Apps\MiddleWare;
 use Fliglio\Flfc\Context;
@@ -10,7 +10,7 @@ use Fliglio\Flfc\Exceptions\RedirectException;
 /**
  * 
  */
-class UriLintApp extends MiddleWare {
+class UrlLintApp extends MiddleWare {
 	
 	public function call(Context $context) {
 		$currentUrl = $context->getRequest()->getUrl();
@@ -21,7 +21,7 @@ class UriLintApp extends MiddleWare {
 
 				$protocol = $context->getRequest()->getProtocol();
 				$host = $context->getRequest()->getHost();
-				$url = Uri::get(sprintf("%s://%s/", $protocol, $host))
+				$url = Url::fromString(sprintf("%s://%s/", $protocol, $host))
 						->join(rtrim($currentUrl, '/'))
 						->addParams($_GET);
 			
