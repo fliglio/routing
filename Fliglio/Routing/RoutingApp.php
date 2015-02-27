@@ -6,7 +6,7 @@ use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Apps\MiddleWare;
 use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Exceptions\RedirectException;
-use Fliglio\Flfc\Exceptions\PageNotFoundException;
+use Fliglio\Http\Exceptions\NotFoundException;
 
 /**
  * 
@@ -32,7 +32,7 @@ class RoutingApp extends MiddleWare {
 		try {
 			$route = $this->routeMap->getRoute($context->getRequest());
 		} catch (RouteException $e) {
-			throw new PageNotFoundException(sprintf(
+			throw new NotFoundException(sprintf(
 				"Route not found for request: %s %s://%s%s",
 				$currentMethod, $currentProtocol, $currentHost, $currentUrl 
 			));
