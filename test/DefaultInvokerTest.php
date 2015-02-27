@@ -3,7 +3,7 @@ namespace Fliglio\Routing;
 
 
 use Fliglio\Web\Url;
-use Fliglio\Web\HttpAttributes;
+use Fliglio\Http\Http;
 use Fliglio\Flfc\Exceptions\RedirectException;
 use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Context;
@@ -19,8 +19,8 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 
 	public function setup() {
 		$this->request = new Request();
-		$this->request->setProtocol(HttpAttributes::HTTP);
-		$this->request->setHttpMethod(HttpAttributes::METHOD_GET);
+		$this->request->setProtocol(Http::HTTP);
+		$this->request->setHttpMethod(Http::METHOD_GET);
 		$this->context = new Context($this->request, new Response());
 
 		$this->routeMap = new RouteMap();
@@ -28,19 +28,19 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 			->connect('ex', RouteBuilder::get()
 				->uri('/foo/:id')
 				->command('Fliglio\Routing.StubResource.getFoo')
-				->method(HttpAttributes::METHOD_GET)
+				->method(Http::METHOD_GET)
 				->build()
 			)
 			->connect('ex2', RouteBuilder::get()
 				->uri('/bar/:id')
 				->command('Fliglio\Routing.StubResourceChild.getFoo')
-				->method(HttpAttributes::METHOD_GET)
+				->method(Http::METHOD_GET)
 				->build()
 			)
 			->connect('bad', RouteBuilder::get()
 				->uri('/baz/:id')
 				->command('Fliglio\Routing.StubResource.getFlub')
-				->method(HttpAttributes::METHOD_GET)
+				->method(Http::METHOD_GET)
 				->build()
 			);
 
@@ -56,7 +56,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		$result = $this->context->getResponse()->getBody()->getContent();
 		
 		// then
-		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
+		$this->assertEquals(Http::METHOD_GET, $result['method']);
 	}
 
 	public function testRouteParamInjection() {
@@ -110,7 +110,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		$result = $this->context->getResponse()->getBody()->getContent();
 		
 		// then
-		$this->assertEquals(HttpAttributes::METHOD_GET, $result['method']);
+		$this->assertEquals(Http::METHOD_GET, $result['method']);
 	}
 
 	/**

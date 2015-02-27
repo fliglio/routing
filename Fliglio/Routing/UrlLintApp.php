@@ -2,7 +2,7 @@
 namespace Fliglio\Routing;
 
 use Fliglio\Web\Url;
-use Fliglio\Web\HttpAttributes;
+use Fliglio\Http\Http;
 use Fliglio\Flfc\Apps\MiddleWare;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Exceptions\RedirectException;
@@ -16,7 +16,7 @@ class UrlLintApp extends MiddleWare {
 		$currentUrl = $context->getRequest()->getUrl();
 		$currentMethod = $context->getRequest()->getHttpMethod();
 		// Strip trailing "/", adding back in namespace if necessary
-		if ($currentMethod == HttpAttributes::METHOD_GET) {
+		if ($currentMethod == Http::METHOD_GET) {
 			if (substr($currentUrl, -1) == '/' && $currentUrl != '/') {
 
 				$protocol = $context->getRequest()->getProtocol();

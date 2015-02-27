@@ -2,7 +2,7 @@
 
 
 use Fliglio\Web\Url;
-use Fliglio\Web\HttpAttributes;
+use Fliglio\Http\Http;
 use Fliglio\Routing\RouteMap;
 use Fliglio\Routing\PatternRoute;
 use Fliglio\Routing\Type\RouteBuilder;
@@ -14,16 +14,16 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 		$routeMap = new RouteMap();
 		$routeMap->connect('test', RouteBuilder::get()
 				->uri('/foo/:id')
-				->method(HttpAttributes::METHOD_GET)
+				->method(Http::METHOD_GET)
 				->command('TestApp\Example.FooController.getFoo')
-				->protocol(HttpAttributes::HTTPS)
+				->protocol(Http::HTTPS)
 				->param('bar', 'baz')
 				->build()
 			);
 
 		$req = new Request();
 		$req->setUrl(new Url('/foo/123'));
-		$req->setHttpMethod(HttpAttributes::METHOD_GET);
+		$req->setHttpMethod(Http::METHOD_GET);
 
 		$route = $routeMap->getRoute($req);
 		$params = $route->getParams();

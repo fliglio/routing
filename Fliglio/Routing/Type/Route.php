@@ -3,7 +3,7 @@
 namespace Fliglio\Routing\Type;
 
 use Fliglio\Web\Url;
-use Fliglio\Web\HttpAttributes;
+use Fliglio\Http\Http;
 use Fliglio\Http\RequestReader;
 
 abstract class Route {
@@ -12,12 +12,12 @@ abstract class Route {
 	private $protocol;
 	private $command;
 	private $methods = array(
-		HttpAttributes::METHOD_GET, 
-		HttpAttributes::METHOD_POST, 
-		HttpAttributes::METHOD_PUT, 
-		HttpAttributes::METHOD_DELETE, 
-		HttpAttributes::METHOD_PATCH, 
-		HttpAttributes::METHOD_OPTIONS
+		Http::METHOD_GET, 
+		Http::METHOD_POST, 
+		Http::METHOD_PUT, 
+		Http::METHOD_DELETE, 
+		Http::METHOD_PATCH, 
+		Http::METHOD_OPTIONS
 	);
 
 	public function __construct(array $params) {

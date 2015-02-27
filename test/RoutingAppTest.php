@@ -3,7 +3,7 @@ namespace Fliglio\Routing;
 
 
 use Fliglio\Web\Url;
-use Fliglio\Web\HttpAttributes;
+use Fliglio\Http\Http;
 use Fliglio\Flfc\Exceptions\RedirectException;
 use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Context;
@@ -19,7 +19,7 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 
 	public function setup() {
 		$this->request = new Request();
-		$this->request->setHttpMethod(HttpAttributes::METHOD_GET);
+		$this->request->setHttpMethod(Http::METHOD_GET);
 		$this->context = new Context($this->request, new Response());
 
 		$this->routeMap = new RouteMap();
@@ -27,13 +27,13 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 			->connect('patternEx', RouteBuilder::get()
 				->uri('/foo/:id')
 				->command('MyApp\Example.FooResource.getFoo')
-				->method(HttpAttributes::METHOD_GET)
+				->method(Http::METHOD_GET)
 				->build()
 			)
 			->connect("staticEx", RouteBuilder::get()
 				->uri('/foo')
 				->command('MyApp\Example.FooResource.getAllFoos')
-				->method(HttpAttributes::METHOD_GET)
+				->method(Http::METHOD_GET)
 				->build()
 			)
 			->connect("error", RouteBuilder::get()

@@ -3,7 +3,7 @@
 namespace Fliglio\Routing;
 
 use Fliglio\Web\Url;
-use Fliglio\Web\HttpAttributes;
+use Fliglio\Http\Http;
 use Fliglio\Routing\Type\Route;
 use Fliglio\Http\RequestReader;
 

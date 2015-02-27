@@ -3,7 +3,7 @@
 namespace Fliglio\Routing\Type;
 
 use Fliglio\Web\Url;
-use Fliglio\Web\HttpAttributes;
+use Fliglio\Http\Http;
 
 class RouteBuilder {
 	const TYPE_PATTERN = 0;
