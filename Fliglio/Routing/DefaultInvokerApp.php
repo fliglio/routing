@@ -7,20 +7,14 @@ use Fliglio\Flfc\DefaultBody;
 use Fliglio\Flfc\UnmarshalledBody;
 use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Exceptions\CommandNotFoundException;
-use Fliglio\Routing\Input\Body;
-use Fliglio\Routing\Input\RouteParam;
-use Fliglio\Routing\Input\GetParam;
+use Fliglio\Web\Body;
+use Fliglio\Web\RouteParam;
+use Fliglio\Web\GetParam;
 use Fliglio\Routing\RoutingApp;
 use Fliglio\Http\ResponseBody;
 
 class DefaultInvokerApp extends App {
 
-	private $mappers = array();
-
-	public function addMapper($entityName, ApiMapper $mapper) {
-		$this->mappers[$entityName] = $mapper;
-		return $this;
-	}
 	
 	public function call(Context $context) {
 		$route = $context->getProp(RoutingApp::CURRENT_ROUTE);
@@ -80,19 +74,19 @@ class DefaultInvokerApp extends App {
 			case 'Fliglio\Http\ResponseWriter':
 				$methodArgs[] = $context->getResponse();
 				break;
-			case 'Fliglio\Routing\Input\Body':
+			case 'Fliglio\Web\Body':
 				$req = $context->getRequest();
 				$c = $req->isHeaderSet('ContentType') ? $req->getHeader('ContentType') : null;
 				$methodArgs[] = new Body($req->getBody(), $c);
 				break;
-			case 'Fliglio\Routing\Input\RouteParam':
+			case 'Fliglio\Web\RouteParam':
 				if (!isset($routeParams[$paramName])) {
 					throw new CommandNotFoundException("No suitable method signature found: Route param ".$paramName." does not exist");
 				}	
 				$methodArgs[] = new RouteParam($routeParams[$paramName]);
 				
 				break;	
-			case 'Fliglio\Routing\Input\GetParam':
+			case 'Fliglio\Web\GetParam':
 				if (!isset($getParams[$paramName])) {
 					if (!$param->isOptional()) {
 						throw new CommandNotFoundException("No suitable method signature found: GET param ".$paramName." does not exist");

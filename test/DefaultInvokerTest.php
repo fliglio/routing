@@ -25,6 +25,12 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->routeMap = new RouteMap();
 		$this->routeMap
+			->connect('postEx', RouteBuilder::get()
+				->uri('/foo')
+				->command('Fliglio\Routing.StubResource.addFoo')
+				->method(Http::METHOD_POST)
+				->build()
+			)
 			->connect('ex', RouteBuilder::get()
 				->uri('/foo/:id')
 				->command('Fliglio\Routing.StubResource.getFoo')
@@ -111,6 +117,23 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		
 		// then
 		$this->assertEquals(Http::METHOD_GET, $result['method']);
+	}
+
+	public function testBodyInjection() {
+		$json = '{"foo": "bar"}';
+
+		$this->request->setUrl('/foo');
+		$this->request->setHttpMethod(Http::METHOD_POST);
+		$this->request->setBody($json);
+
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
+
+		// when
+		$app->call($this->context);
+		$result = $this->context->getResponse()->getBody()->getContent();
+		
+		// then
+		$this->assertEquals($result, $json);
 	}
 
 	/**

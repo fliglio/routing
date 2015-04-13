@@ -6,6 +6,7 @@ use Fliglio\Http\RequestReader;
 use Fliglio\Routing\Routable;
 use Fliglio\Routing\Input\RouteParam;
 use Fliglio\Routing\Input\GetParam;
+use Fliglio\Routing\Input\Body;
 
 use Fliglio\Fltk\View;
 use Fliglio\Fltk\JsonView;
@@ -23,7 +24,9 @@ class StubResource {
 		);
 	}
 
-	
+	public function addFoo(Body $body) {
+		return $body->get();
+	}	
 }
 
 class StubResourceChild extends StubResource {
