@@ -4,9 +4,9 @@ namespace Fliglio\Routing;
 
 use Fliglio\Http\RequestReader;
 use Fliglio\Routing\Routable;
-use Fliglio\Routing\Input\RouteParam;
-use Fliglio\Routing\Input\GetParam;
-use Fliglio\Routing\Input\Body;
+use Fliglio\Web\RouteParam;
+use Fliglio\Web\GetParam;
+use Fliglio\Web\Body;
 
 use Fliglio\Fltk\View;
 use Fliglio\Fltk\JsonView;

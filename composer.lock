@@ -12,17 +12,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/flfc.git",
-                "reference": "833b433451dfa4ee2c57afdec556e98f1a1d5f5d"
+                "reference": "b445a04422ee566a940ed4c5df87f78ac257c092"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/flfc/zipball/833b433451dfa4ee2c57afdec556e98f1a1d5f5d",
-                "reference": "833b433451dfa4ee2c57afdec556e98f1a1d5f5d",
+                "url": "https://api.github.com/repos/fliglio/flfc/zipball/b445a04422ee566a940ed4c5df87f78ac257c092",
+                "reference": "b445a04422ee566a940ed4c5df87f78ac257c092",
                 "shasum": ""
             },
             "require": {
                 "fliglio/http": "dev-master",
                 "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.1.0"
             },
             "type": "library",
             "autoload": {
@@ -40,7 +43,7 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-04-12 03:54:52"
+            "time": "2015-04-13 15:47:29"
         },
         {
             "name": "fliglio/http",
@@ -86,12 +89,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fliglio/web.git",
-                "reference": "ea96989292dbbadf60feaede21e0e5d24949c1d1"
+                "reference": "ad58c7cea6adba72d2391800b658c3ff5adb7b3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fliglio/web/zipball/ea96989292dbbadf60feaede21e0e5d24949c1d1",
-                "reference": "ea96989292dbbadf60feaede21e0e5d24949c1d1",
+                "url": "https://api.github.com/repos/fliglio/web/zipball/ad58c7cea6adba72d2391800b658c3ff5adb7b3c",
+                "reference": "ad58c7cea6adba72d2391800b658c3ff5adb7b3c",
                 "shasum": ""
             },
             "require": {
@@ -118,7 +121,7 @@
                     "email": "benschw@gmail.com"
                 }
             ],
-            "time": "2015-03-04 21:07:28"
+            "time": "2015-04-13 15:48:47"
         }
     ],
     "packages-dev": [
