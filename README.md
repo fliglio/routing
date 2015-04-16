@@ -1,4 +1,4 @@
-[![Build Status](https://drone.io/github.com/philipwhitt/fliglio-routing/status.png)](https://drone.io/github.com/philipwhitt/fliglio-routing/latest)
 
-fliglio-routing
-===============
+# fliglio-routing
+
+[![Build Status](https://travis-ci.org/fliglio/routing.svg?branch=master)](https://travis-ci.org/fliglio/routing)
