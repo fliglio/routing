@@ -79,7 +79,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetParamInjection() {
-		$_GET['type'] = "foo";
+		$this->request->setGetParams(array("type" => "foo"));
 		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
@@ -93,7 +93,6 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptionalGetParamInjection() {
-		unset($_GET['type']);
 		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
