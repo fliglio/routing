@@ -1,3 +1,4 @@
+sudo: false
 image: php5.4
 script:
   - composer up
