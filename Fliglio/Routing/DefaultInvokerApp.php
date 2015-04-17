@@ -103,40 +103,6 @@ class DefaultInvokerApp extends App {
 			}
 		}
 		return $methodArgs;
-
-		// 	switch ($paramClass->getName()) {
-		// 	case 'Fliglio\Http\RequestReader':
-		// 		$methodArgs[] = $context->getRequest();
-		// 		break;
-		// 	case 'Fliglio\Http\ResponseWriter':
-		// 		$methodArgs[] = $context->getResponse();
-		// 		break;
-		// 	case 'Fliglio\Web\Body':
-		// 		$req = $context->getRequest();
-		// 		$c = $req->isHeaderSet('ContentType') ? $req->getHeader('ContentType') : null;
-		// 		$methodArgs[] = new Body($req->getBody(), $c);
-		// 		break;
-		// 	case 'Fliglio\Web\RouteParam':
-		// 		if (!isset($routeParams[$paramName])) {
-		// 			throw new CommandNotFoundException("No suitable method signature found: Route param ".$paramName." does not exist");
-		// 		}	
-		// 		$methodArgs[] = new RouteParam($routeParams[$paramName]);
-				
-		// 		break;	
-		// 	case 'Fliglio\Web\GetParam':
-		// 		if (!isset($getParams[$paramName])) {
-		// 			if (!$param->isOptional()) {
-		// 				throw new CommandNotFoundException("No suitable method signature found: GET param ".$paramName." does not exist");
-		// 			}
-		// 		} else {
-		// 			$methodArgs[] = new GetParam($getParams[$paramName]);
-		// 		}
-		// 		break;	
-		// 	default:
-		// 		throw new CommandNotFoundException("No suitable method signature found: Type ".$paramClass->getName()." not recognized");
-		// 	}
-		// }
-		// return $methodArgs;
 	}
 
 }

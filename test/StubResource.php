@@ -4,7 +4,7 @@ namespace Fliglio\Routing;
 
 use Fliglio\Http\RequestReader;
 use Fliglio\Routing\Routable;
-use Fliglio\Web\RouteParam;
+use Fliglio\Web\PathParam;
 use Fliglio\Web\GetParam;
 use Fliglio\Web\Body;
 
@@ -16,7 +16,7 @@ class StubResource {
 	public function __construct() {
 	}
 	
-	public function getFoo(RequestReader $req, RouteParam $id, GetParam $type = null) {
+	public function getFoo(RequestReader $req, PathParam $id, GetParam $type = null) {
 		return array(
 			'method' => $req->getHttpMethod(),
 			'id' => $id->get(),
