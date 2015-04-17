@@ -8,7 +8,7 @@ php:
 
 before_script:
   - composer self-update
-  - composer install --prefer-source --dev
+  - composer install --prefer-source
 
 script:
   - ./vendor/bin/phpunit -v -c phpunit.xml
