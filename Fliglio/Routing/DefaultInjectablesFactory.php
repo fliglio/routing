@@ -5,19 +5,21 @@ namespace Fliglio\Routing;
 use Fliglio\Flfc\Exceptions\CommandNotFoundException;
 use Fliglio\Flfc\Context;
 use Fliglio\Web\Body;
-use Fliglio\Web\RouteParam;
+use Fliglio\Web\PathParam;
 use Fliglio\Web\GetParam;
 
 class DefaultInjectablesFactory {
 
 	public function createAll() {
-		return array(
+		return [
 			$this->createRequestReader(), 
 			$this->createResponseWriter(),
 			$this->createBody(),
-			$this->createRouteParam(),
-			$this->createGetParam()
-		);
+			$this->createPathParam(),
+			$this->createIntPathParam(),
+			$this->createGetParam(),
+			$this->createIntGetParam()
+		];
 	}
 
 	public function createRequestReader() {
@@ -49,9 +51,9 @@ class DefaultInjectablesFactory {
 		);
 	}
 
-	public function createRouteParam() {
+	public function createPathParam() {
 		return new InjectableProperty(
-			'Fliglio\Web\RouteParam', 
+			'Fliglio\Web\PathParam', 
 			function(Context $context, $paramName) {
 				$route = $context->getProp(RoutingApp::CURRENT_ROUTE);
 				$routeParams = $route->getParams();
@@ -59,7 +61,22 @@ class DefaultInjectablesFactory {
 				if (!isset($routeParams[$paramName])) {
 					throw new CommandNotFoundException("No suitable method signature found: Route param ".$paramName." does not exist");
 				}	
-				return new RouteParam($routeParams[$paramName]);
+				return new PathParam($routeParams[$paramName]);
+			}
+		);
+	}
+
+	public function createIntPathParam() {
+		return new InjectableProperty(
+			'Fliglio\Web\IntPathParam', 
+			function(Context $context, $paramName) {
+				$route = $context->getProp(RoutingApp::CURRENT_ROUTE);
+				$routeParams = $route->getParams();
+				
+				if (!isset($routeParams[$paramName])) {
+					throw new CommandNotFoundException("No suitable method signature found: Route param ".$paramName." does not exist");
+				}	
+				return new IntPathParam($routeParams[$paramName]);
 			}
 		);
 	}
@@ -74,6 +91,21 @@ class DefaultInjectablesFactory {
 					throw new CommandNotFoundException("No suitable method signature found: GET param ".$paramName." does not exist");
 				} else {
 					return new GetParam($getParams[$paramName]);
+				}
+			}
+		);
+	}
+
+	public function createIntGetParam() {
+		return new InjectableProperty(
+			'Fliglio\Web\IntGetParam', 
+			function(Context $context, $paramName) {
+				$getParams = $context->getRequest()->getGetParams();
+
+				if (!isset($getParams[$paramName])) {
+					throw new CommandNotFoundException("No suitable method signature found: GET param ".$paramName." does not exist");
+				} else {
+					return new IntGetParam($getParams[$paramName]);
 				}
 			}
 		);

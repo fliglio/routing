@@ -65,7 +65,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(Http::METHOD_GET, $result['method']);
 	}
 
-	public function testRouteParamInjection() {
+	public function testPathParamInjection() {
 		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
