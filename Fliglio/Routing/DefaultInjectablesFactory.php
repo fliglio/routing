@@ -17,10 +17,11 @@ class DefaultInjectablesFactory {
 			$this->createRequestReader(), 
 			$this->createResponseWriter(),
 			$this->createBody(),
+			$this->createEntity(),
 			$this->createPathParam(),
 			$this->createIntPathParam(),
 			$this->createGetParam(),
-			$this->createIntGetParam()
+			$this->createIntGetParam(),
 		];
 	}
 
@@ -49,6 +50,17 @@ class DefaultInjectablesFactory {
 				$req = $context->getRequest();
 				$c = $req->isHeaderSet('ContentType') ? $req->getHeader('ContentType') : null;
 				return new Body($req->getBody(), $c);
+			}
+		);
+	}
+	
+	public function createEntity() {
+		return new InjectableProperty(
+			'Fliglio\Web\Entity', 
+			function(Context $context, $paramName) {
+				$req = $context->getRequest();
+				$c = $req->isHeaderSet('ContentType') ? $req->getHeader('ContentType') : null;
+				return new Entity($req->getBody(), $c);
 			}
 		);
 	}
