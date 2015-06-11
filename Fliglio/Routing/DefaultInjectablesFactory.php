@@ -9,6 +9,7 @@ use Fliglio\Web\PathParam;
 use Fliglio\Web\GetParam;
 use Fliglio\Web\IntPathParam;
 use Fliglio\Web\IntGetParam;
+use Fliglio\Web\Entity;
 
 class DefaultInjectablesFactory {
 
