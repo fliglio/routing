@@ -39,18 +39,15 @@ class DefaultInvokerApp extends App {
 	
 	public function call(Context $context) {
 		$route = $context->getProp(RoutingApp::CURRENT_ROUTE);
-		$cmd = $route->getCommand();
-		list($ns, $name, $methodName) = explode('.', $cmd);
 		
-		$className = $ns . '\\' . $name;
+		$instance = $route->getResourceInstance();
+		$methodName = $route->getResourceMethod();
 		
 		$routeParams = $route->getParams();
 		$getParams = $_GET;
 		
-		$instance = new $className();
-	
 
-		$rMethod = $this->getReflectionMethod($className, $methodName);
+		$rMethod = $this->getReflectionMethod($instance, $methodName);
 		$methodArgs = $this->getMethodArgs($rMethod, $context, $routeParams, $getParams);
 
 		$to = $rMethod->invokeArgs($instance, $methodArgs);

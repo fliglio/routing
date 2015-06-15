@@ -23,7 +23,7 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 		$routeMap->connect('test', RouteBuilder::get()
 				->uri('/foo/:id')
 				->method(Http::METHOD_GET)
-				->command('TestApp\Example.FooController.getFoo')
+				->command('Fliglio\Routing.StubResource.getFlub')
 				->protocol(Http::HTTPS)
 				->param('bar', 'baz')
 				->build()
@@ -38,8 +38,8 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 			'id' => 123,
 			'bar' => 'baz'
 		));
-
-		$this->assertEquals('TestApp\Example.FooController.getFoo', $route->getCommand());
+		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
+		$this->assertEquals('getFlub', $route->getResourceMethod());
 	}
 
 }
