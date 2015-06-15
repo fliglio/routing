@@ -11,8 +11,8 @@
     "require": {
         "php": ">=5.3",
         "fliglio/web": "dev-master",
-        "fliglio/http": "dev-master",
-        "fliglio/flfc": "dev-master"
+        "fliglio/http": "dev-fli",
+        "fliglio/flfc": "dev-fli"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.1.0"
