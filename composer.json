@@ -10,9 +10,9 @@
     ],
     "require": {
         "php": ">=5.3",
-        "fliglio/web": "dev-master",
-        "fliglio/http": "dev-master",
-        "fliglio/flfc": "dev-master"
+        "fliglio/web": "2.2.*",
+        "fliglio/http": "2.2.*",
+        "fliglio/flfc": "2.2.*"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.1.0"
