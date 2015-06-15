@@ -26,24 +26,24 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 		$this->routeMap
 			->connect('patternEx', RouteBuilder::get()
 				->uri('/foo/:id')
-				->command('MyApp\Example.FooResource.getFoo')
+				->command('Fliglio\Routing.StubResource.getFoo')
 				->method(Http::METHOD_GET)
 				->build()
 			)
 			->connect("staticEx", RouteBuilder::get()
 				->uri('/foo')
-				->command('MyApp\Example.FooResource.getAllFoos')
+				->command('Fliglio\Routing.StubResource.getFoo')
 				->method(Http::METHOD_GET)
 				->build()
 			)
 			->connect("error", RouteBuilder::get()
 				->catchNone()
-				->command('MyApp\Example.ErrorResource.handleError')
+				->command('Fliglio\Routing.StubResource.error')
 				->build()
 			)
 			->connect("404", RouteBuilder::get()
 				->catchAll()
-				->command('MyApp\Example.ErrorResource.handlePageNotFound')
+				->command('Fliglio\Routing.StubResource.dne')
 				->build()
 			);
 	}
@@ -61,25 +61,29 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 	public function testPatternRoute() {
 		$route = $this->getRouteFromUrl('/foo/123');
 
-		$this->assertEquals('MyApp\Example.FooResource.getFoo', $route->getCommand());
+		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
+		$this->assertEquals('getFoo', $route->getResourceMethod());
 	}
 
 	public function testStaticRoute() {
 		$route = $this->getRouteFromUrl('/foo');
 
-		$this->assertEquals('MyApp\Example.FooResource.getAllFoos', $route->getCommand());
+		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
+		$this->assertEquals('getFoo', $route->getResourceMethod());
 	}
 
 	public function testCatchNoneParams() {
 		$route = $this->getRouteFromUrl('@error');
 
-		$this->assertEquals('MyApp\Example.ErrorResource.handleError', $route->getCommand());
+		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
+		$this->assertEquals('error', $route->getResourceMethod());
 	}
 
 	public function testCatchAllParams() {
 		$route = $this->getRouteFromUrl('/dne');
 
-		$this->assertEquals('MyApp\Example.ErrorResource.handlePageNotFound', $route->getCommand());
+		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
+		$this->assertEquals('dne', $route->getResourceMethod());
 	}
 
 }

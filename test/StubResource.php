@@ -27,6 +27,8 @@ class StubResource {
 	public function addFoo(Body $body) {
 		return $body->get();
 	}	
+	public function dne() {}
+	public function error() {}
 }
 
 class StubResourceChild extends StubResource {
