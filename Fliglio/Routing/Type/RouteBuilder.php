@@ -20,6 +20,7 @@ class RouteBuilder {
 	private $routeType = null;
 	private $protocol = null;
 	private $methods = array();
+	private $key = null;
 	private $params = array();
 
 	public function __construct() {}
@@ -43,7 +44,10 @@ class RouteBuilder {
 		$this->protocol = $protocol;
 		return $this;
 	}
-
+	public function key($key) {
+		$this->key = $key;
+		return $this;
+	}
 	public function catchAll() {
 		$this->routeType = self::TYPE_ALL;
 		return $this;
@@ -92,6 +96,7 @@ class RouteBuilder {
 		default:
 			throw new RouteException("Not enough info to build a route");
 		}
+		$route->setKey($this->key);
 		$route->setProtocol($this->protocol);
 
 		if (!is_null($this->resource) && !is_null($this->resourceMethod)) {

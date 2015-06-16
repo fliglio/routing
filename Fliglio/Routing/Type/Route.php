@@ -9,6 +9,7 @@ use Fliglio\Http\RequestReader;
 abstract class Route {
 	private $params;
 
+	private $key;
 	private $protocol;
 	private $methods = array(
 		Http::METHOD_GET, 
@@ -49,6 +50,12 @@ abstract class Route {
 		return $this->resourceMethod;
 	}
 
+	public function setKey($key) {
+		$this->key = $key;
+	}
+	public function getKey() {
+		return $this->key;
+	}
 
 	public function setProtocol($val) {
 		$this->protocol = $val;
