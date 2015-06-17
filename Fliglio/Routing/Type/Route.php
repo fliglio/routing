@@ -9,8 +9,8 @@ use Fliglio\Http\RequestReader;
 abstract class Route {
 	private $params;
 
+	private $key;
 	private $protocol;
-	private $command;
 	private $methods = array(
 		Http::METHOD_GET, 
 		Http::METHOD_POST, 
@@ -19,6 +19,9 @@ abstract class Route {
 		Http::METHOD_PATCH, 
 		Http::METHOD_OPTIONS
 	);
+
+	private $resource;
+	private $resourceMethod;
 
 	public function __construct(array $params) {
 		$this->params = $params;
@@ -36,11 +39,22 @@ abstract class Route {
 		return $this->methods;
 	}
 
-	public function setCommand($cmd) {
-		$this->command = $cmd;
+	public function setResource($resource, $resourceMethod) {
+		$this->resource = $resource;
+		$this->resourceMethod = $resourceMethod;
 	}
-	public function getCommand() {
-		return $this->command;
+	public function getResourceInstance() {
+		return $this->resource;
+	}
+	public function getResourceMethod() {
+		return $this->resourceMethod;
+	}
+
+	public function setKey($key) {
+		$this->key = $key;
+	}
+	public function getKey() {
+		return $this->key;
 	}
 
 	public function setProtocol($val) {

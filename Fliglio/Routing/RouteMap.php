@@ -19,13 +19,27 @@ class RouteMap {
 		return new self();
 	}
 
-	public function connect($key, Route $route) {
-		if (isset($this->indexed[$key])) {
-			throw new RouteException( "Route '{$key}' already exists" );
-		}
+	public function connectRoute(Route $route) {
 		$this->routes[] = $route;
-		$this->indexed[$key] = $route;
+			$key = $route->getKey();
+		if (!is_null($key)) {
+			if (isset($this->indexed[$key])) {
+				throw new RouteException( "Route '{$key}' already exists" );
+			}
+			$this->indexed[$key] = $route;
+		}
 		return $this;
+	}
+
+	/* ig $key isn't null, set it on the route. Else ignore
+	 *
+	 * @Deprecated
+	 */
+	public function connect($key, Route $route) {
+		if (!is_null($key)) {
+			$route->setKey($key);
+		}	
+		return $this->connectRoute($route);
 	}
 	public function getRoute(RequestReader $request) {
 		$url = (string)$request->getUrl();
