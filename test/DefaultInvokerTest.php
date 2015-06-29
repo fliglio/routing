@@ -60,7 +60,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals(Http::METHOD_GET, $result['method']);
 	}
@@ -73,7 +73,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals('123', $result['id']);
 	}
@@ -87,7 +87,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals('foo', $result['type']);
 	}
@@ -100,7 +100,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals(null, $result['type']);
 	}
@@ -113,7 +113,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals(Http::METHOD_GET, $result['method']);
 	}
@@ -130,7 +130,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals($result, $json);
 	}
