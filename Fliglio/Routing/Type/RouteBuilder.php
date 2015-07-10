@@ -6,11 +6,10 @@ use Fliglio\Web\Url;
 use Fliglio\Http\Http;
 
 class RouteBuilder {
-
 	const TYPE_PATTERN = 0;
-	const TYPE_STATIC  = 1;
-	const TYPE_ALL     = 2;
-	const TYPE_NONE    = 3;
+	const TYPE_STATIC = 1;
+	const TYPE_ALL = 2;
+	const TYPE_NONE = 3;
 
 	private $command = null;
 
@@ -60,17 +59,11 @@ class RouteBuilder {
 
 	public function uri($uriTemplate) {
 		$this->uriTemplate = $uriTemplate;
-
-		if (strPos($uriTemplate, ':') !== false) {
-			$this->routeType = self::TYPE_PATTERN;
-
-		} else if ($uriTemplate == '*') {
-			$this->routeType = self::TYPE_ALL;
-	
-		} else {
+		if (strPos($uriTemplate, ':') === false) {
 			$this->routeType = self::TYPE_STATIC;
+		} else {
+			$this->routeType = self::TYPE_PATTERN;
 		}
-
 		return $this;
 	}
 
@@ -103,7 +96,7 @@ class RouteBuilder {
 			default:
 				throw new RouteException("Not enough info to build a route");
 		}
-
+		
 		$route->setKey($this->key);
 		$route->setProtocol($this->protocol);
 
