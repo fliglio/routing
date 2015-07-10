@@ -6,10 +6,11 @@ use Fliglio\Web\Url;
 use Fliglio\Http\Http;
 
 class RouteBuilder {
+
 	const TYPE_PATTERN = 0;
-	const TYPE_STATIC = 1;
-	const TYPE_ALL = 2;
-	const TYPE_NONE = 3;
+	const TYPE_STATIC  = 1;
+	const TYPE_ALL     = 2;
+	const TYPE_NONE    = 3;
 
 	private $command = null;
 
@@ -59,11 +60,17 @@ class RouteBuilder {
 
 	public function uri($uriTemplate) {
 		$this->uriTemplate = $uriTemplate;
-		if (strPos($uriTemplate, ':') === false) {
-			$this->routeType = self::TYPE_STATIC;
-		} else {
+
+		if (strPos($uriTemplate, ':') !== false) {
 			$this->routeType = self::TYPE_PATTERN;
+
+		} else if ($uriTemplate == '*') {
+			$this->routeType = self::TYPE_ALL;
+	
+		} else {
+			$this->routeType = self::TYPE_STATIC;
 		}
+
 		return $this;
 	}
 
@@ -81,21 +88,22 @@ class RouteBuilder {
 		$route;
 
 		switch ($this->routeType) {
-		case self::TYPE_ALL:
-			$route = new CatchAllRoute($this->params);
-			break;
-		case self::TYPE_NONE:
-			$route = new CatchNoneRoute($this->params);
-			break;
-		case self::TYPE_STATIC:
-			$route = new StaticRoute($this->uriTemplate, $this->params);
-			break;
-		case self::TYPE_PATTERN:
-			$route = new PatternRoute($this->uriTemplate, $this->params);
-		break;
-		default:
-			throw new RouteException("Not enough info to build a route");
+			case self::TYPE_ALL:
+				$route = new CatchAllRoute($this->params);
+				break;
+			case self::TYPE_NONE:
+				$route = new CatchNoneRoute($this->params);
+				break;
+			case self::TYPE_STATIC:
+				$route = new StaticRoute($this->uriTemplate, $this->params);
+				break;
+			case self::TYPE_PATTERN:
+				$route = new PatternRoute($this->uriTemplate, $this->params);
+				break;
+			default:
+				throw new RouteException("Not enough info to build a route");
 		}
+
 		$route->setKey($this->key);
 		$route->setProtocol($this->protocol);
 

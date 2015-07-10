@@ -27,6 +27,12 @@ class StubResource {
 	public function addFoo(Body $body) {
 		return $body->get();
 	}	
+	public function getCatchAll() {
+		return 'Not Found';
+	}
+	public function getCatchNone() {
+		return 'None';
+	}
 	public function dne() {}
 	public function error() {}
 }
