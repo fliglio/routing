@@ -48,8 +48,46 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 				->command('Fliglio\Routing.StubResource.getFlub')
 				->method(Http::METHOD_GET)
 				->build()
+			)
+			->connect('catchNone', RouteBuilder::get()
+				->uri('')
+				->command('Fliglio\Routing.StubResource.getCatchNone')
+				->method(Http::METHOD_GET)
+				->build()
+			)
+			->connect('catchAll', RouteBuilder::get()
+				->uri('*')
+				->command('Fliglio\Routing.StubResource.getCatchAll')
+				->method(Http::METHOD_GET)
+				->build()
 			);
 
+	}
+
+	public function testCatchAll() {
+		$this->request->setUrl('/route/does/not/exist');
+
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
+
+		// when
+		$app->call($this->context);
+		$result = $this->context->getResponse()->getBody()->getContent();
+
+		// then
+		$this->assertEquals('Not Found', $result);
+	}
+
+	public function testCatchNone() {
+		$this->request->setUrl('');
+
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
+
+		// when
+		$app->call($this->context);
+		$result = $this->context->getResponse()->getBody()->getContent();
+
+		// then
+		$this->assertEquals('None', $result);
 	}
 
 	public function testRequestInjection() {
@@ -60,7 +98,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals(Http::METHOD_GET, $result['method']);
 	}
@@ -73,7 +111,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals('123', $result['id']);
 	}
@@ -87,7 +125,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals('foo', $result['type']);
 	}
@@ -100,7 +138,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals(null, $result['type']);
 	}
@@ -113,7 +151,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals(Http::METHOD_GET, $result['method']);
 	}
@@ -130,7 +168,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		// when
 		$app->call($this->context);
 		$result = $this->context->getResponse()->getBody()->getContent();
-		
+
 		// then
 		$this->assertEquals($result, $json);
 	}

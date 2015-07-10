@@ -88,9 +88,3 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 
 }
 
-class StubApp extends App {
-	public $called = false;
-	public function call(Context $context) {
-		$this->called = true;
-	}
-}
