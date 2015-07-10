@@ -4,7 +4,7 @@ namespace Fliglio\Routing;
 
 use Fliglio\Web\Url;
 use Fliglio\Http\Http;
-use Fliglio\Flfc\Exceptions\RedirectException;
+use Fliglio\Http\Exceptions\MovedPermanentlyException;
 use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
@@ -35,7 +35,7 @@ class UrlLintAppTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($url, $ctx->getRequest()->getUrl());
 	}
 	/**
-	 * @expectedException Fliglio\Flfc\Exceptions\RedirectException
+	 * @expectedException Fliglio\Http\Exceptions\MovedPermanentlyException
 	 */
 	public function testTrailingSlashCausesRedirect() {
 		// given
@@ -79,11 +79,24 @@ class UrlLintAppTest extends \PHPUnit_Framework_TestCase {
 		$loc = '';
 		try {
 			$app->call($ctx);
-		} catch (RedirectException $e) {
+		} catch (MovedPermanentlyException $e) {
 			$loc = $e->getLocation();
 		}
 
 		//then
 		$this->assertEquals('/foo/bar?foo=bar&baz=bin', (string)$loc);
 	}
+
+	public function testNoRedirectOnRootPage() {
+		// given
+		$app = new UrlLintApp(new StubApp());
+		$ctx = $this->createContext(Url::fromString('/'));
+
+		// when
+		$app->call($ctx);
+
+		// then
+		$this->assertTrue(true);
+	}
+
 }
