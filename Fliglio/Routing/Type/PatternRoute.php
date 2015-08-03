@@ -7,12 +7,13 @@ use Fliglio\Http\RequestReader;
 
 /**
  * Routing_PatternRoute
- * 
+ *
  * 	$route = new Routing_PatternRoute("/:arg1/:arg2/something", array("constant" => "myParam"));
  * 
  * @package Fl
  */
 class PatternRoute extends Route {
+	private $pattern;
 	private $regex;
 
 	private $toCapture = array();
@@ -21,9 +22,13 @@ class PatternRoute extends Route {
 	public function __construct($pattern, array $params = array()) {
         parent::__construct($params);
 
+		$this->pattern = $pattern;
 		$this->parse($pattern);
 	}
 
+	public function getPattern() {
+		return $this->pattern;
+	}
 	/**
 	 * Parse a pattern like "/:arg1/:arg2/something" and returns a regexp and
 	 * list of arguments that the regexp will capture.
@@ -38,7 +43,7 @@ class PatternRoute extends Route {
 			function(array $matches) {
 				$this->toCapture[] = $matches[1];
 				return '(?P<' . $matches[1] . '>[^\/]+)';
-			}, 
+			},
 			preg_quote($pattern, '/')
 		);
 		$this->regex = '/^' . $regexInner . '$/';
