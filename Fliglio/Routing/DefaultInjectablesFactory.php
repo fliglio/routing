@@ -15,6 +15,7 @@ class DefaultInjectablesFactory {
 
 	public function createAll() {
 		return [
+			$this->createRoute(), 
 			$this->createRequestReader(), 
 			$this->createResponseWriter(),
 			$this->createBody(),
@@ -24,6 +25,15 @@ class DefaultInjectablesFactory {
 			$this->createGetParam(),
 			$this->createIntGetParam(),
 		];
+	}
+
+	public function createRoute() {
+		return new InjectableProperty(
+			'Fliglio\Routing\Type\Route', 
+			function(Context $context, $paramName) {
+				return isset($context->getProps()['currentRoute']) ? $context->getProps()['currentRoute'] : null;
+			}
+		);
 	}
 
 	public function createRequestReader() {

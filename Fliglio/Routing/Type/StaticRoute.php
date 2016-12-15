@@ -14,7 +14,10 @@ class StaticRoute extends Route {
 
 		$this->criteria = $criteria;
 	}
-	
+	public function getCriteria() {
+		return $this->criteria;
+	}
+
 	public function match(RequestReader $req) {
 		if (!parent::match($req)) {
 			return false;
