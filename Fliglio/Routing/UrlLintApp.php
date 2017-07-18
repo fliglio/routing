@@ -14,7 +14,7 @@ use Fliglio\Flfc\Apps\App;
  * - optionally perform redirect to url (e.g. for seo)
  */
 class UrlLintApp extends MiddleWare {
-	
+
 	private $redirect;
 
 	public function __construct(App $appToWrap, $redirect = true) {
@@ -51,11 +51,13 @@ class UrlLintApp extends MiddleWare {
 
 		$this->wrappedApp->call($context);
 	}
+
 	private function lintPath($path) {
 		$path = rtrim($path, '/');
 		$path = preg_replace('#/+#','/',$path);
 		return $path;
 	}
+
 	private function arrayToQuery($arr) {
 		return http_build_query($arr);
 	}

@@ -1,23 +1,24 @@
 {
-    "name": "fliglio/routing",
-    "type": "library",
-    "license": "GPL-3.0+",
-    "authors": [
-        {
-            "name": "Ben Schwartz",
-            "email": "benschw@gmail.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.3",
-        "fliglio/web": "2.1.*",
-        "fliglio/http": "2.1.*",
-        "fliglio/flfc": "2.1.*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~4.1.0"
-    },
-    "autoload": {
-        "psr-0": { "Fliglio\\Routing\\": "" }
-    }
+	"name": "fliglio/routing",
+	"type": "library",
+	"license": "GPL-3.0+",
+	"authors": [{
+		"name": "Ben Schwartz",
+		"email": "benschw@gmail.com"
+	}],
+	"require": {
+		"php"          : ">=5.3",
+		"fliglio/web"  : "2.1.*",
+		"fliglio/http" : "2.1.*",
+		"fliglio/flfc" : "2.1.*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~4.1.0"
+	},
+	"autoload": {
+		"psr-0": { "Fliglio\\Routing\\": "" }
+	},
+	"autoload-dev": {
+		"classmap": ["test"]
+	}
 }

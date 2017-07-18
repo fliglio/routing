@@ -21,5 +21,4 @@ class InjectableProperty implements Injectable {
 		return $this->closure->__invoke($context, $paramName);
 	}
 
-
 }

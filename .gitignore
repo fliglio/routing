@@ -2,3 +2,4 @@ error_log
 vendor
 composer.lock
 tags
+build
