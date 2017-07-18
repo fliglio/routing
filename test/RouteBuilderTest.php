@@ -1,6 +1,5 @@
 <?php
 
-
 use Fliglio\Http\Http;
 use Fliglio\Routing\RouteMap;
 use Fliglio\Routing\PatternRoute;
@@ -9,19 +8,10 @@ use Fliglio\Flfc\Request;
 
 class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 
-	public function testBuilder() {
+	public function setup() {
+		$this->routeMap = new RouteMap();
 
-		// given
-		$routeMap = new RouteMap();
-
-		$req = new Request();
-		$req->setUrl('/foo/123');
-		$req->setHttpMethod(Http::METHOD_GET);
-		$req->setProtocol(Http::HTTPS);
-		// when
-
-		$routeMap
-			->connect('test', RouteBuilder::get()
+		$this->routeMap->connect('test', RouteBuilder::get()
 				->uri('/foo/:id')
 				->method(Http::METHOD_GET)
 				->command('Fliglio\Routing.StubResource.getFlub')
@@ -46,11 +36,80 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 				->protocol(Http::HTTPS)
 				->param('bar', 'baz')
 				->build()
-			);	
+			);
+	}
 
+	public function testUrlFor_StaticRoute() {
+		// given
+		$this->routeMap->connect(__METHOD__, RouteBuilder::get()
+			->uri('/foo/bar/baz')
+			->command('Fliglio\Routing.StubResource.getFlub')
+			->build()
+		);
+
+		// when
+		$route = $this->routeMap->urlFor(__METHOD__, ['id' => 'bar']);
 
 		// then
-		$route = $routeMap->getRoute($req);
+		$this->assertEquals((string)$route, '/foo/bar/baz?id=bar');
+	}
+
+	public function testUrlFor_PatternRoute() {
+		// when
+		$route = $this->routeMap->urlFor('test', ['id' => 'bar']);
+
+		// then
+		$this->assertEquals((string)$route, '/foo/bar');
+	}
+
+	public function testUrlFor_MultipleRouteParams() {
+		// given
+		$this->routeMap->connect(__METHOD__, RouteBuilder::get()
+			->uri('/foo/:param1/:param2/static/:param3')
+			->command('Fliglio\Routing.StubResource.getFlub')
+			->build()
+		);
+
+		// when
+		$route = $this->routeMap->urlFor(__METHOD__, [
+			'param1' => 'foo', 
+			'param2' => 'bar', 
+			'param3' => 'baz',
+			'dog'    => '  pup *&@#!',
+			'cat'    => 'kitten',
+		]);
+
+		// then
+		$this->assertEquals((string)$route, '/foo/foo/bar/static/baz?dog=++pup+%2A%26%40%23%21&cat=kitten');
+	}
+
+	/**
+	 * @expectedException Fliglio\Routing\RouteException
+	 */
+	public function testUrlFor_InvalidKey() {
+		// when
+		$this->routeMap->urlFor('doesntExist', ['id' => 'bar']);
+	}
+
+	/**
+	 * @expectedException Fliglio\Routing\RouteException
+	 */
+	public function testUrlFor_InvalidRouteParam() {
+		// when
+		$this->routeMap->urlFor('test', ['badkey' => 'bar']);
+	}
+
+	public function testBuilder() {
+		// given
+		$req = new Request();
+		$req->setUrl('/foo/123');
+		$req->setHttpMethod(Http::METHOD_GET);
+		$req->setProtocol(Http::HTTPS);
+
+		// when
+		$route = $this->routeMap->getRoute($req);
+
+		// then
 		$params = $route->getParams();
 
 		$this->assertEquals($params, array(
@@ -62,12 +121,12 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 
 		// and
 		$req->setUrl('/foo2/123');
-		$route = $routeMap->getRoute($req);
+		$route = $this->routeMap->getRoute($req);
 		$this->assertEquals('getFlub2', $route->getResourceMethod());
-	
+
 		// and
 		$req->setUrl('/foo3/123');
-		$route = $routeMap->getRoute($req);
+		$route = $this->routeMap->getRoute($req);
 		$this->assertEquals('getFlub3', $route->getResourceMethod());
 	}
 

@@ -13,6 +13,7 @@ use Fliglio\Http\ResponseBody;
 class DefaultInvokerApp extends App {
 
 	private $injectables = array();
+
 	/**
 	 * Create new DefaultInvokerApp
 	 * optionally include array of injectables
@@ -36,7 +37,7 @@ class DefaultInvokerApp extends App {
 		$this->injectables[$i->getClassName()] = $i;
 		return $this;
 	}
-	
+
 	public function call(Context $context) {
 		$route = $context->getProp(RoutingApp::CURRENT_ROUTE);
 		
@@ -45,7 +46,6 @@ class DefaultInvokerApp extends App {
 		
 		$routeParams = $route->getParams();
 		$getParams = $_GET;
-		
 
 		$rMethod = $this->getReflectionMethod($instance, $methodName);
 		$methodArgs = $this->getMethodArgs($rMethod, $context, $routeParams, $getParams);
@@ -67,18 +67,21 @@ class DefaultInvokerApp extends App {
 		} catch (\ReflectionException $e) {
 			$rClass = new \ReflectionClass($className);
 			$parentRClass = $rClass->getParentClass();
+
 			if (!is_object($parentRClass)) {
 				throw new CommandNotFoundException("Method '{$methodName}' does not exist");
 			}
+
 			$parentClassName = $parentRClass->getName();
 			return self::getReflectionMethod($parentClassName, $methodName);
 		}
 	}
+
 	private function getMethodArgs(\ReflectionMethod $rMethod, Context $context, $routeParams, $getParams) {
 		$methodArgs = array();
 
 		$params = $rMethod->getParameters();
-		
+
 		foreach ($params as $param) {
 			//$param is an instance of ReflectionParameter
 			$paramName = $param->getName();
