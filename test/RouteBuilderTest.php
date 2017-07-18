@@ -39,7 +39,22 @@ class RouteBuilderTest extends PHPUnit_Framework_TestCase {
 			);
 	}
 
-	public function testUrlFor() {
+	public function testUrlFor_StaticRoute() {
+		// given
+		$this->routeMap->connect(__METHOD__, RouteBuilder::get()
+			->uri('/foo/bar/baz')
+			->command('Fliglio\Routing.StubResource.getFlub')
+			->build()
+		);
+
+		// when
+		$route = $this->routeMap->urlFor(__METHOD__, ['id' => 'bar']);
+
+		// then
+		$this->assertEquals((string)$route, '/foo/bar/baz?id=bar');
+	}
+
+	public function testUrlFor_PatternRoute() {
 		// when
 		$route = $this->routeMap->urlFor('test', ['id' => 'bar']);
 

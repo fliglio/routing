@@ -10,4 +10,5 @@ class CatchAllRoute extends Route {
 	public function match(RequestReader $req) {
 		return true;
 	}
+
 }

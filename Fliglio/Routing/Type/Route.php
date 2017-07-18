@@ -68,6 +68,10 @@ abstract class Route {
 		return $this->params;
 	}
 
+	public function urlFor(array $params = []) {
+		return $this->assembleUrl('', $params);
+	}
+
 	protected function assembleUrl($url, array $params) {
 		if (count($params) > 0) {
 			$cleanParams = array_map(
