@@ -5,6 +5,7 @@ namespace Fliglio\Routing\Type;
 use Fliglio\Web\Url;
 use Fliglio\Http\Http;
 use Fliglio\Http\RequestReader;
+use Fliglio\Routing\RouteException;
 
 abstract class Route {
 	private $params;
@@ -30,7 +31,6 @@ abstract class Route {
 	public function match(RequestReader $req) {
 		return in_array($req->getHttpMethod(), $this->getMethods());
 	}
-
 
 	public function setMethods(array $methods) {
 		$this->methods = $methods;
@@ -64,10 +64,28 @@ abstract class Route {
 		return $this->protocol;
 	}
 
-
-
 	public function getParams() {
 		return $this->params;
+	}
+
+	protected function assembleUrl($url, array $params) {
+		if (count($params) > 0) {
+			$cleanParams = array_map(
+				[$this, 'urlEncodeParts'], 
+				array_keys($params), 
+				array_values($params)
+			);
+
+			$queryString = implode("&", $cleanParams);
+
+			$url .= "?" . $queryString;
+		}
+
+		return Url::fromString($url);
+	}
+
+	private function urlEncodeParts($key, $val) {
+		return urlencode($key) . "=" . urlencode($val);
 	}
 
 }

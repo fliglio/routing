@@ -25,12 +25,20 @@ class RouteMap {
 
 		if (!is_null($key)) {
 			if (isset($this->indexed[$key])) {
-				throw new RouteException( "Route '{$key}' already exists" );
+				throw new RouteException("Route '{$key}' already exists");
 			}
 			$this->indexed[$key] = $route;
 		}
 
 		return $this;
+	}
+
+	public function urlFor($key, array $params = []) {
+		if (!isset($this->indexed[$key])) {
+			throw new RouteException(sprintf("'%s' not found in routes", $key));
+		}
+
+		return $this->indexed[$key]->urlFor($params);
 	}
 
 	/* ig $key isn't null, set it on the route. Else ignore
