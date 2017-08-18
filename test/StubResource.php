@@ -4,6 +4,8 @@ namespace Fliglio\Routing;
 
 use Fliglio\Http\RequestReader;
 use Fliglio\Routing\Routable;
+use Fliglio\Web\Entity;
+use Fliglio\Web\IntPathParam;
 use Fliglio\Web\PathParam;
 use Fliglio\Web\GetParam;
 use Fliglio\Web\Body;
@@ -32,6 +34,13 @@ class StubResource {
 	}
 	public function getCatchNone() {
 		return 'None';
+	}
+	public function getEntity(Entity $entity, IntPathParam $id) {
+		return [
+			'id' => $id->get(),
+			'body' => $entity->get(),
+			'contentType' => $entity->getContentType()
+		];
 	}
 	public function dne() {}
 	public function error() {}
