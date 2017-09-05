@@ -59,7 +59,7 @@ class DefaultInjectablesFactory {
 			'Fliglio\Web\Body', 
 			function(Context $context, $paramName) {
 				$req = $context->getRequest();
-				$c = $req->isHeaderSet('ContentType') ? $req->getHeader('ContentType') : null;
+				$c = $req->isHeaderSet('content-type') ? $req->getHeader('content-type') : null;
 				return new Body($req->getBody(), $c);
 			}
 		);
@@ -70,7 +70,7 @@ class DefaultInjectablesFactory {
 			'Fliglio\Web\Entity', 
 			function(Context $context, $paramName) {
 				$req = $context->getRequest();
-				$c = $req->isHeaderSet('ContentType') ? $req->getHeader('ContentType') : null;
+				$c = $req->isHeaderSet('content-type') ? $req->getHeader('content-type') : null;
 				return new Entity($req->getBody(), $c);
 			}
 		);

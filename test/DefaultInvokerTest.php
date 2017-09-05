@@ -2,17 +2,15 @@
 namespace Fliglio\Routing;
 
 
-use Fliglio\Web\Url;
-use Fliglio\Http\Http;
-use Fliglio\Flfc\Exceptions\RedirectException;
-use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
 use Fliglio\Flfc\Response;
+use Fliglio\Http\Http;
 use Fliglio\Routing\Type\RouteBuilder;
 
 class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 
+	/** @var  Request */
 	private $request;
 	private $context;
 	private $routeMap;
@@ -35,6 +33,12 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 				->uri('/foo/:id')
 				->command('Fliglio\Routing.StubResource.getFoo')
 				->method(Http::METHOD_GET)
+				->build()
+			)
+			->connect('exE', RouteBuilder::get()
+				->uri('/foo/:id/entity')
+				->command('Fliglio\Routing.StubResource.getEntity')
+				->method(Http::METHOD_POST)
 				->build()
 			)
 			->connect('ex2', RouteBuilder::get()
@@ -135,6 +139,28 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 
 		// then
 		$this->assertEquals(Http::METHOD_GET, $result['method']);
+	}
+
+	public function testEntityInjectionHeader() {
+		$formData = 'foo=bar&baz=foo';
+
+		$this->request->setUrl('/foo/321/entity');
+		$this->request->setHttpMethod(Http::METHOD_POST);
+		$this->request->setBody($formData);
+		$this->request->addHeader('Content-Type', $type = uniqid());
+
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
+
+		// when
+		$app->call($this->context);
+		$result = $this->context->getResponse()->getBody()->getContent();
+
+		// then
+		$this->assertEquals([
+			'id' => 321,
+			'body' => 'foo=bar&baz=foo',
+			'contentType' => $type
+		], $result);
 	}
 
 	public function testBodyInjection() {
