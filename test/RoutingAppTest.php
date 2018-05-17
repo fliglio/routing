@@ -36,6 +36,12 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 				->method(Http::METHOD_GET)
 				->build()
 			)
+			->connect("regex", RouteBuilder::get()
+				->regex('/\/(a|b|c)/')
+				->method(Http::METHOD_GET)
+				->command('Fliglio\Routing.StubResource.getFoo')
+				->build()
+			)
 			->connect("error", RouteBuilder::get()
 				->catchNone()
 				->command('Fliglio\Routing.StubResource.error')
@@ -58,9 +64,18 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 		return $this->context->getProp(RoutingApp::CURRENT_ROUTE);
 	}
 
+	public function testRegexRoute() {
+		$route = $this->getRouteFromUrl('/a');
+
+		$this->assertEquals('Fliglio\Routing\Type\RegexRoute', get_class($route));
+		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
+		$this->assertEquals('getFoo', $route->getResourceMethod());
+	}
+
 	public function testPatternRoute() {
 		$route = $this->getRouteFromUrl('/foo/123');
 
+		$this->assertEquals('Fliglio\Routing\Type\PatternRoute', get_class($route));
 		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
 		$this->assertEquals('getFoo', $route->getResourceMethod());
 	}
@@ -68,6 +83,7 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 	public function testStaticRoute() {
 		$route = $this->getRouteFromUrl('/foo');
 
+		$this->assertEquals('Fliglio\Routing\Type\StaticRoute', get_class($route));
 		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
 		$this->assertEquals('getFoo', $route->getResourceMethod());
 	}
@@ -75,6 +91,7 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 	public function testCatchNoneParams() {
 		$route = $this->getRouteFromUrl('@error');
 
+		$this->assertEquals('Fliglio\Routing\Type\CatchNoneRoute', get_class($route));
 		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
 		$this->assertEquals('error', $route->getResourceMethod());
 	}
@@ -82,6 +99,7 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 	public function testCatchAllParams() {
 		$route = $this->getRouteFromUrl('/dne');
 
+		$this->assertEquals('Fliglio\Routing\Type\CatchAllRoute', get_class($route));
 		$this->assertEquals('Fliglio\Routing\StubResource', get_class($route->getResourceInstance()));
 		$this->assertEquals('dne', $route->getResourceMethod());
 	}

@@ -2,14 +2,14 @@
 
 namespace Fliglio\Routing\Type;
 
-use Fliglio\Web\Url;
-use Fliglio\Http\Http;
+use Fliglio\Routing\RouteException;
 
 class RouteBuilder {
 	const TYPE_PATTERN = 0;
-	const TYPE_STATIC = 1;
-	const TYPE_ALL = 2;
-	const TYPE_NONE = 3;
+	const TYPE_REGEX   = 1;
+	const TYPE_STATIC  = 2;
+	const TYPE_ALL     = 3;
+	const TYPE_NONE    = 4;
 
 	private $command = null;
 
@@ -34,9 +34,9 @@ class RouteBuilder {
 	}
 	public function command($cmd) {
 		list($ns, $name, $methodName) = explode('.', $cmd);
-		
+
 		$className = $ns . '\\' . $name;
-		
+
 		$instance = new $className();
 		return $this->resource($instance, $methodName);
 	}
@@ -56,10 +56,15 @@ class RouteBuilder {
 		$this->routeType = self::TYPE_NONE;
 		return $this;
 	}
+	public function regex($regex) {
+		$this->routeType = self::TYPE_REGEX;
+		$this->uriTemplate = $regex;
+		return $this;
+	}
 
 	public function uri($uriTemplate) {
 		$this->uriTemplate = $uriTemplate;
-		if (strPos($uriTemplate, ':') === false) {
+		if (strpos($uriTemplate, ':') === false) {
 			$this->routeType = self::TYPE_STATIC;
 		} else {
 			$this->routeType = self::TYPE_PATTERN;
@@ -78,7 +83,6 @@ class RouteBuilder {
 	}
 
 	public function build() {
-		$route;
 
 		switch ($this->routeType) {
 			case self::TYPE_ALL:
@@ -93,10 +97,13 @@ class RouteBuilder {
 			case self::TYPE_PATTERN:
 				$route = new PatternRoute($this->uriTemplate, $this->params);
 				break;
+			case self::TYPE_REGEX:
+				$route = new RegexRoute($this->uriTemplate, $this->params);
+				break;
 			default:
 				throw new RouteException("Not enough info to build a route");
 		}
-		
+
 		$route->setKey($this->key);
 		$route->setProtocol($this->protocol);
 
