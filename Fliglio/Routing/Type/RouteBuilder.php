@@ -2,8 +2,7 @@
 
 namespace Fliglio\Routing\Type;
 
-use Fliglio\Web\Url;
-use Fliglio\Http\Http;
+use Fliglio\Routing\RouteException;
 
 class RouteBuilder {
 	const TYPE_PATTERN = 0;
@@ -28,6 +27,10 @@ class RouteBuilder {
 		return new self();
 	}
 	public function resource($resource, $method) {
+		if (!method_exists($resource, $method)) {
+			throw new RouteException(sprintf('%s->%s not found', get_class($resource), $method));
+		}
+
 		$this->resource = $resource;
 		$this->resourceMethod = $method;
 		return $this;
