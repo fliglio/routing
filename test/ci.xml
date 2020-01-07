@@ -1,4 +1,4 @@
-<phpunit colors="true" backupGlobals="false" bootstrap="bootstrap.php">
+<phpunit colors="true" backupGlobals="false">
 	<testsuites>
 	    <testsuite name="Fliglio Routing">
 			<directory>../test</directory>
