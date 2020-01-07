@@ -17,6 +17,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 
 	public function setup() {
 		$this->request = new Request();
+		$this->request->setHost("www.google.com");
 		$this->request->setProtocol(Http::HTTP);
 		$this->request->setHttpMethod(Http::METHOD_GET);
 		$this->context = new Context($this->request, new Response());
@@ -47,10 +48,25 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 				->method(Http::METHOD_GET)
 				->build()
 			)
+			->connect('proto', RouteBuilder::get()
+				->uri('/biz/:id')
+				->command('Fliglio\Routing.StubResourceChild.getFoo')
+				->method(Http::METHOD_GET)
+				->protocol(Http::HTTPS)
+				->build()
+			)
 			->connect('bad', RouteBuilder::get()
 				->uri('/baz/:id')
 				->command('Fliglio\Routing.StubResource.getFlub')
 				->method(Http::METHOD_GET)
+				->protocol(Http::HTTP)
+				->build()
+			)
+			->connect('par', RouteBuilder::get()
+				->uri('/par/:id')
+				->command('Fliglio\Routing.StubResourceChild.getFlub')
+				->method(Http::METHOD_GET)
+				->protocol(Http::HTTP)
 				->build()
 			)
 			->connect('catchAll', RouteBuilder::get()
@@ -62,7 +78,34 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
+	/** @expectedException Fliglio\Routing\RouteException */
+	public function testConnectingDuplicateRoutes() {
+		// when
+		$this->routeMap->connect('postEx', 
+			RouteBuilder::get()
+				->uri('/foo')
+				->command('Fliglio\Routing.StubResource.addFoo')
+				->method(Http::METHOD_POST)
+				->build()
+		);
+	}
+
+	/** @expectedException Fliglio\Flfc\Exceptions\RedirectException */
+	public function testChangeOfProtocol() {
+		// given
+		$this->request->setUrl('/biz/123');
+
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
+
+		// when
+		$app->call($this->context);
+
+		// then
+		$this->assertTrue(false);
+	}
+
 	public function testCatchAll() {
+		// given
 		$this->request->setUrl('/route/does/not/exist');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
@@ -75,7 +118,22 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('Not Found', $result);
 	}
 
+	/** @expectedException Fliglio\Http\Exceptions\NotFoundException */
+	public function testRouteDoesNotExist() {
+		// given
+		$this->request->setUrl('/foo/123');
+
+		$app = new RoutingApp(new DefaultInvokerApp(), RouteMap::get());
+
+		// when
+		$app->call($this->context);
+
+		// then
+		$this->assertTrue(false);
+	}
+
 	public function testRequestInjection() {
+		// given
 		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
@@ -89,6 +147,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPathParamInjection() {
+		// given
 		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
@@ -102,6 +161,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetParamInjection() {
+		// given
 		$this->request->setGetParams(array("type" => "foo"));
 		$this->request->setUrl('/foo/123');
 
@@ -116,6 +176,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptionalGetParamInjection() {
+		// given
 		$this->request->setUrl('/foo/123');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
@@ -129,6 +190,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInheritance() {
+		// given
 		$this->request->setUrl('/bar/123');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
@@ -142,6 +204,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEntityInjectionHeader() {
+		// given
 		$formData = 'foo=bar&baz=foo';
 
 		$this->request->setUrl('/foo/321/entity');
@@ -164,6 +227,7 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBodyInjection() {
+		// given
 		$json = '{"foo": "bar"}';
 
 		$this->request->setUrl('/foo');
@@ -180,11 +244,21 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($result, $json);
 	}
 
-	/**
-	 * @expectedException Fliglio\Flfc\Exceptions\CommandNotFoundException
-	 */
+	/** @expectedException Fliglio\Flfc\Exceptions\CommandNotFoundException */
 	public function testMethodNotFound() {
+		// given
 		$this->request->setUrl('/baz/123');
+
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
+
+		// when
+		$app->call($this->context);
+	}
+
+	/** @expectedException Fliglio\Flfc\Exceptions\CommandNotFoundException */
+	public function testMethodNotFound_whenParent() {
+		// given
+		$this->request->setUrl('/par/123');
 
 		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
 

@@ -2,8 +2,7 @@
 
 namespace Fliglio\Routing\Type;
 
-use Fliglio\Web\Url;
-use Fliglio\Http\Http;
+use Fliglio\Routing\RouteException;
 
 class RouteBuilder {
 	const TYPE_PATTERN = 0;
