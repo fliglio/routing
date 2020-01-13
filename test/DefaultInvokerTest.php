@@ -104,6 +104,20 @@ class DefaultInvokerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(false);
 	}
 
+	/** @expectedException Fliglio\Flfc\Exceptions\RedirectException */
+	public function testChangeOfProtocol_withQueryParams() {
+		// given
+		$this->request->setUrl('/biz/123?q=1&b=3');
+
+		$app = new RoutingApp(new DefaultInvokerApp(), $this->routeMap);
+
+		// when
+		$app->call($this->context);
+
+		// then
+		$this->assertTrue(false);
+	}
+
 	public function testCatchAll() {
 		// given
 		$this->request->setUrl('/route/does/not/exist');
