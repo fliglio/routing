@@ -40,9 +40,7 @@ class RoutingApp extends MiddleWare {
 		// Force pages to their designated protocol if specified
 		if ($route->getProtocol() != null) {
 			if ($currentProtocol != $route->getProtocol()) {
-				$getParams = implode("&", $_GET);
-				$getParams = !empty($getParams) ? "?".$getParams : "";
-
+				
 				/** @var Url $url */
 				$url = Url::fromString(sprintf("%s://%s%s", $route->getProtocol(), $currentHost, $currentUrl));
 
