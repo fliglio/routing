@@ -2,7 +2,6 @@
 
 use Fliglio\Http\Http;
 use Fliglio\Routing\RouteMap;
-use Fliglio\Routing\PatternRoute;
 use Fliglio\Routing\Type\RouteBuilder;
 use Fliglio\Flfc\Request;
 

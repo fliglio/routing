@@ -2,7 +2,6 @@
 
 namespace Fliglio\Routing\Type;
 
-use Fliglio\Web\Url;
 use Fliglio\Http\RequestReader;
 use Fliglio\Routing\RouteException;
 

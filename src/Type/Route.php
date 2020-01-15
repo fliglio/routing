@@ -5,7 +5,6 @@ namespace Fliglio\Routing\Type;
 use Fliglio\Web\Url;
 use Fliglio\Http\Http;
 use Fliglio\Http\RequestReader;
-use Fliglio\Routing\RouteException;
 
 abstract class Route {
 	private $params;

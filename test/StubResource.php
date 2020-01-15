@@ -3,15 +3,11 @@
 namespace Fliglio\Routing;
 
 use Fliglio\Http\RequestReader;
-use Fliglio\Routing\Routable;
 use Fliglio\Web\Entity;
 use Fliglio\Web\IntPathParam;
 use Fliglio\Web\PathParam;
 use Fliglio\Web\GetParam;
 use Fliglio\Web\Body;
-
-use Fliglio\Fltk\View;
-use Fliglio\Fltk\JsonView;
 
 class StubResource {
 
@@ -46,8 +42,6 @@ class StubResource {
 	public function error() {}
 }
 
-class StubResourceChild extends StubResource {
+class StubResourceChild extends StubResource {}
 
-
-	
-}
+#class StubResourceChild extends StubResource {}
