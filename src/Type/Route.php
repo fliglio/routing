@@ -31,7 +31,6 @@ abstract class Route {
 		return in_array($req->getHttpMethod(), $this->getMethods());
 	}
 
-
 	public function setMethods(array $methods) {
 		$this->methods = $methods;
 	}
@@ -64,10 +63,32 @@ abstract class Route {
 		return $this->protocol;
 	}
 
-
-
 	public function getParams() {
 		return $this->params;
+	}
+
+	public function urlFor(array $params = []) {
+		return $this->assembleUrl('', $params);
+	}
+
+	protected function assembleUrl($url, array $params) {
+		if (count($params) > 0) {
+			$cleanParams = array_map(
+				[$this, 'urlEncodeParts'], 
+				array_keys($params), 
+				array_values($params)
+			);
+
+			$queryString = implode("&", $cleanParams);
+
+			$url .= "?" . $queryString;
+		}
+
+		return Url::fromString($url);
+	}
+
+	private function urlEncodeParts($key, $val) {
+		return urlencode($key) . "=" . urlencode($val);
 	}
 
 }

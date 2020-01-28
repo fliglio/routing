@@ -2,8 +2,7 @@
 
 namespace Fliglio\Routing\Type;
 
-use Fliglio\Web\Url;
-use Fliglio\Http\Http;
+use Fliglio\Routing\RouteException;
 
 class RouteBuilder {
 	const TYPE_PATTERN = 0;
@@ -81,21 +80,22 @@ class RouteBuilder {
 		$route;
 
 		switch ($this->routeType) {
-		case self::TYPE_ALL:
-			$route = new CatchAllRoute($this->params);
-			break;
-		case self::TYPE_NONE:
-			$route = new CatchNoneRoute($this->params);
-			break;
-		case self::TYPE_STATIC:
-			$route = new StaticRoute($this->uriTemplate, $this->params);
-			break;
-		case self::TYPE_PATTERN:
-			$route = new PatternRoute($this->uriTemplate, $this->params);
-		break;
-		default:
-			throw new RouteException("Not enough info to build a route");
+			case self::TYPE_ALL:
+				$route = new CatchAllRoute($this->params);
+				break;
+			case self::TYPE_NONE:
+				$route = new CatchNoneRoute($this->params);
+				break;
+			case self::TYPE_STATIC:
+				$route = new StaticRoute($this->uriTemplate, $this->params);
+				break;
+			case self::TYPE_PATTERN:
+				$route = new PatternRoute($this->uriTemplate, $this->params);
+				break;
+			default:
+				throw new RouteException("Not enough info to build a route");
 		}
+		
 		$route->setKey($this->key);
 		$route->setProtocol($this->protocol);
 

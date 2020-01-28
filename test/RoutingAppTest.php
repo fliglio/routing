@@ -79,6 +79,12 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('error', $route->getResourceMethod());
 	}
 
+	/** @expectedException Fliglio\Http\Exceptions\NotFoundException */
+	public function testGetRouteByKey_whenDoesNotExist() {
+		// when
+		$this->getRouteFromUrl('@foo');
+	}
+
 	public function testCatchAllParams() {
 		$route = $this->getRouteFromUrl('/dne');
 
@@ -88,9 +94,3 @@ class RoutingAppTest extends \PHPUnit_Framework_TestCase {
 
 }
 
-class StubApp extends App {
-	public $called = false;
-	public function call(Context $context) {
-		$this->called = true;
-	}
-}

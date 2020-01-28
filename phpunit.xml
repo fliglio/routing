@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit bootstrap="./vendor/autoload.php">
+	<testsuites>
+		<testsuite name="Routing Test Suite">
+			<directory suffix=".php">./test</directory>
+		</testsuite>
+	</testsuites>
 
-
-    <testsuites>
-        <testsuite name="Addr Test Suite">
-            <directory suffix=".php">./test</directory>
-        </testsuite>
-    </testsuites>
-
-
+	<filter>
+		<whitelist>
+			<directory suffix=".php">./src</directory>
+		</whitelist>
+	</filter>
 </phpunit>

@@ -15,6 +15,7 @@ class DefaultInjectablesFactory {
 
 	public function createAll() {
 		return [
+			$this->createRoute(), 
 			$this->createRequestReader(), 
 			$this->createResponseWriter(),
 			$this->createBody(),
@@ -24,6 +25,15 @@ class DefaultInjectablesFactory {
 			$this->createGetParam(),
 			$this->createIntGetParam(),
 		];
+	}
+
+	public function createRoute() {
+		return new InjectableProperty(
+			'Fliglio\Routing\Type\Route', 
+			function(Context $context, $paramName) {
+				return isset($context->getProps()['currentRoute']) ? $context->getProps()['currentRoute'] : null;
+			}
+		);
 	}
 
 	public function createRequestReader() {
@@ -49,7 +59,7 @@ class DefaultInjectablesFactory {
 			'Fliglio\Web\Body', 
 			function(Context $context, $paramName) {
 				$req = $context->getRequest();
-				$c = $req->isHeaderSet('ContentType') ? $req->getHeader('ContentType') : null;
+				$c = $req->isHeaderSet('content-type') ? $req->getHeader('content-type') : null;
 				return new Body($req->getBody(), $c);
 			}
 		);
@@ -60,7 +70,7 @@ class DefaultInjectablesFactory {
 			'Fliglio\Web\Entity', 
 			function(Context $context, $paramName) {
 				$req = $context->getRequest();
-				$c = $req->isHeaderSet('ContentType') ? $req->getHeader('ContentType') : null;
+				$c = $req->isHeaderSet('content-type') ? $req->getHeader('content-type') : null;
 				return new Entity($req->getBody(), $c);
 			}
 		);

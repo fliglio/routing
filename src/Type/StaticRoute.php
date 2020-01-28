@@ -2,7 +2,6 @@
 
 namespace Fliglio\Routing\Type;
 
-use Fliglio\Web\Url;
 use Fliglio\Http\RequestReader;
 
 class StaticRoute extends Route {
@@ -14,7 +13,15 @@ class StaticRoute extends Route {
 
 		$this->criteria = $criteria;
 	}
-	
+
+	public function getCriteria() {
+		return $this->criteria;
+	}
+
+	public function urlFor(array $params = []) {
+		return $this->assembleUrl($this->criteria, $params);
+	}
+
 	public function match(RequestReader $req) {
 		if (!parent::match($req)) {
 			return false;

@@ -8,7 +8,7 @@ use Fliglio\Routing\Type\Route;
 use Fliglio\Http\RequestReader;
 
 class RouteMap {
-		
+
 	private $routes  = array();
 	private $indexed = array();
 
@@ -21,14 +21,24 @@ class RouteMap {
 
 	public function connectRoute(Route $route) {
 		$this->routes[] = $route;
-			$key = $route->getKey();
+		$key = $route->getKey();
+
 		if (!is_null($key)) {
 			if (isset($this->indexed[$key])) {
-				throw new RouteException( "Route '{$key}' already exists" );
+				throw new RouteException("Route '{$key}' already exists");
 			}
 			$this->indexed[$key] = $route;
 		}
+
 		return $this;
+	}
+
+	public function urlFor($key, array $params = []) {
+		if (!isset($this->indexed[$key])) {
+			throw new RouteException(sprintf("'%s' not found in routes", $key));
+		}
+
+		return $this->indexed[$key]->urlFor($params);
 	}
 
 	/* ig $key isn't null, set it on the route. Else ignore
@@ -38,9 +48,11 @@ class RouteMap {
 	public function connect($key, Route $route) {
 		if (!is_null($key)) {
 			$route->setKey($key);
-		}	
+		}
+
 		return $this->connectRoute($route);
 	}
+
 	public function getRoute(RequestReader $request) {
 		$url = (string)$request->getUrl();
 		$method = $request->getHttpMethod();
@@ -49,11 +61,13 @@ class RouteMap {
 			$key = substr($url, 1);
 			return $this->getRouteByKey($key);
 		}
+
 		foreach ($this->routes AS $route) {
 			if ($route->match($request)) {
 				return $route;
 			}
 		}
+
 		throw new RouteException("Route Not Found");
 	}
 
@@ -61,6 +75,7 @@ class RouteMap {
 		if (!isset($this->indexed[$key])) {
 			throw new RouteException("Route '{$key}' does not exist");
 		}
+
 		return $this->indexed[$key];
 	}
 
