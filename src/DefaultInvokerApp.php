@@ -99,7 +99,7 @@ class DefaultInvokerApp extends App {
 					}
 				}
 			} else {
-				throw new CommandNotFoundException("No suitable method signature found: Type ".$paramClass->getName()." not recognized");
+				throw new CommandNotFoundException("No suitable method signature found: Type ".$paramClass." not recognized");
 			}
 		}
 		return $methodArgs;
