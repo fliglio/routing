@@ -1,11 +1,8 @@
 <?php
+
 namespace Fliglio\Routing;
 
-
-use Fliglio\Web\Url;
 use Fliglio\Http\Http;
-use Fliglio\Flfc\Exceptions\RedirectException;
-use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
 use Fliglio\Flfc\Response;

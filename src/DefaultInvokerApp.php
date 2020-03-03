@@ -3,7 +3,6 @@
 namespace Fliglio\Routing;
 
 use Fliglio\Flfc\Context;
-use Fliglio\Flfc\DefaultBody;
 use Fliglio\Flfc\UnmarshalledBody;
 use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Exceptions\CommandNotFoundException;
