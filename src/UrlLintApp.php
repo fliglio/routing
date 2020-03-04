@@ -3,10 +3,10 @@ namespace Fliglio\Routing;
 
 use Fliglio\Web\Url;
 use Fliglio\Http\Http;
-use Fliglio\Flfc\Apps\MiddleWare;
 use Fliglio\Flfc\Context;
-use Fliglio\Flfc\Exceptions\RedirectException;
 use Fliglio\Flfc\Apps\App;
+use Fliglio\Flfc\Apps\MiddleWare;
+use Fliglio\Http\Exceptions\MovedPermanentlyException;
 
 /**
  * - strip trailing slashes
@@ -29,7 +29,7 @@ class UrlLintApp extends MiddleWare {
 		if ($currentMethod == Http::METHOD_GET) {
 			$lintedPath = $this->lintPath($currentUrl);
 
-			if ((string)$currentUrl != $lintedPath) {
+			if ((string)$currentUrl != $lintedPath && (string)$currentUrl != '/') {
 				$protocol = $context->getRequest()->getProtocol();
 				$host = $context->getRequest()->getHost();
 				
@@ -40,7 +40,7 @@ class UrlLintApp extends MiddleWare {
 						'path' => $lintedPath,
 						'query' => $this->arrayToQuery($context->getRequest()->getGetParams()),
 					]);
-					throw new RedirectException("Linting Url and redirecting browser", 301, $url);
+					throw new MovedPermanentlyException($url);
 				} else {
 					$context->getRequest()->setUrl($lintedPath);
 				}

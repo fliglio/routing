@@ -10,8 +10,6 @@ class RouteBuilder {
 	const TYPE_ALL = 2;
 	const TYPE_NONE = 3;
 
-	private $command = null;
-
 	private $resource = null;
 	private $resourceMethod = null;
 
@@ -77,7 +75,7 @@ class RouteBuilder {
 	}
 
 	public function build() {
-		$route;
+		$route = null;
 
 		switch ($this->routeType) {
 			case self::TYPE_ALL:

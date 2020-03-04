@@ -1,11 +1,13 @@
 <?php
 
+namespace Fliglio\Routing;
+
 use Fliglio\Http\Http;
 use Fliglio\Routing\RouteMap;
 use Fliglio\Routing\Type\RouteBuilder;
 use Fliglio\Flfc\Request;
 
-class RouteBuilderTest extends PHPUnit_Framework_TestCase {
+class RouteBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function setup() {
 		$this->routeMap = new RouteMap();

@@ -1,6 +1,6 @@
 <?php
-namespace Fliglio\Routing;
 
+namespace Fliglio\Routing;
 
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
