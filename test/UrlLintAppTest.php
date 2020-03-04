@@ -1,15 +1,12 @@
 <?php
 namespace Fliglio\Routing;
 
-
 use Fliglio\Web\Url;
 use Fliglio\Http\Http;
-use Fliglio\Flfc\Exceptions\RedirectException;
-use Fliglio\Flfc\Apps\App;
 use Fliglio\Flfc\Context;
 use Fliglio\Flfc\Request;
 use Fliglio\Flfc\Response;
-use Fliglio\Routing\Type\RouteBuilder;
+use Fliglio\Http\Exceptions\MovedPermanentlyException;
 
 class UrlLintAppTest extends \PHPUnit_Framework_TestCase {
 
@@ -35,7 +32,7 @@ class UrlLintAppTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($url, $ctx->getRequest()->getUrl());
 	}
 	/**
-	 * @expectedException Fliglio\Flfc\Exceptions\RedirectException
+	 * @expectedException Fliglio\Http\Exceptions\MovedPermanentlyException
 	 */
 	public function testTrailingSlashCausesRedirect() {
 		// given
@@ -79,7 +76,7 @@ class UrlLintAppTest extends \PHPUnit_Framework_TestCase {
 		$loc = '';
 		try {
 			$app->call($ctx);
-		} catch (RedirectException $e) {
+		} catch (MovedPermanentlyException $e) {
 			$loc = $e->getLocation();
 		}
 
