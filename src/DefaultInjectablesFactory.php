@@ -145,7 +145,7 @@ class DefaultInjectablesFactory {
 				$files = $context->getRequest()->getFiles();
 
 				if (!isset($files[$paramName])) {
-					throw new CommandNotFoundException("No suitable method signature found: $_FILE array does not contain ".$paramName);
+					throw new CommandNotFoundException('No suitable method signature found: $_FILE array does not contain '.$paramName);
 				} else {
 					return new FileUpload($files[$paramName]);
 				}
