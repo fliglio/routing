@@ -5,6 +5,7 @@ namespace Fliglio\Routing;
 use Fliglio\Flfc\Exceptions\CommandNotFoundException;
 use Fliglio\Flfc\Context;
 use Fliglio\Web\Body;
+use Fliglio\Web\FileUpload;
 use Fliglio\Web\PathParam;
 use Fliglio\Web\GetParam;
 use Fliglio\Web\IntPathParam;
@@ -24,6 +25,7 @@ class DefaultInjectablesFactory {
 			$this->createIntPathParam(),
 			$this->createGetParam(),
 			$this->createIntGetParam(),
+			$this->createFileUploadParam(),
 		];
 	}
 
@@ -135,4 +137,20 @@ class DefaultInjectablesFactory {
 			}
 		);
 	}
+
+	public function createFileUploadParam() {
+		return new InjectableProperty(
+			'Fliglio\Web\FileUpload',
+			function(Context $context, $paramName) {
+				$files = $context->getRequest()->getFiles();
+
+				if (!isset($files[$paramName])) {
+					throw new CommandNotFoundException('No suitable method signature found: $_FILE array does not contain '.$paramName);
+				} else {
+					return new FileUpload($files[$paramName]);
+				}
+			}
+		);
+	}
+
 }

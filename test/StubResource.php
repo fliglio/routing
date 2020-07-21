@@ -4,6 +4,7 @@ namespace Fliglio\Routing;
 
 use Fliglio\Http\RequestReader;
 use Fliglio\Web\Entity;
+use Fliglio\Web\FileUpload;
 use Fliglio\Web\IntPathParam;
 use Fliglio\Web\PathParam;
 use Fliglio\Web\GetParam;
@@ -21,7 +22,9 @@ class StubResource {
 			'type' => $type == null ? null : $type->get()
 		);
 	}
-
+	public function uploadFile(FileUpload $fieldName) {
+		return $fieldName;
+	}
 	public function addFoo(Body $body) {
 		return $body->get();
 	}	
